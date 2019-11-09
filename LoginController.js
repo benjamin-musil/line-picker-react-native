@@ -23,6 +23,7 @@ import {
   statusCodes,
 } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
+import Restaurant from './app/views/Restaurant';
 
 export default class LoginController extends Component {
   constructor(props) {
@@ -168,6 +169,7 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
+              <Restaurant id="5d6ecc7e574d0b16d41b38f0" />
 
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
