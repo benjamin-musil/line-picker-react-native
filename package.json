@@ -10,8 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "moment": "^2.24.0",
     "react": "16.9.0",
-    "react-native": "0.61.3"
+    "react-native": "0.61.3",
+    "react-native-table-component": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",

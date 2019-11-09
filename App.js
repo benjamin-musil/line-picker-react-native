@@ -23,6 +23,8 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import AddRestaurant from './app/views/AddRestaurant';
+import Restaurant from './app/views/Restaurant';
 
 const App: () => React$Node = () => {
   return (
@@ -32,13 +34,14 @@ const App: () => React$Node = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
+          {/* <Header /> */}
+          {/* {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
-          )}
-          <View style={styles.body}>
+          )} */}
+          <Restaurant id="5d6ecc7e574d0b16d41b38f0" />
+          {/* <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
@@ -65,7 +68,7 @@ const App: () => React$Node = () => {
               </Text>
             </View>
             <LearnMoreLinks />
-          </View>
+          </View> */}
         </ScrollView>
       </SafeAreaView>
     </>
