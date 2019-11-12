@@ -53,7 +53,8 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      console.log(userInfo);
+      console.log('-------------');
+      console.log(userInfo.idToken);
       // create a new firebase credential with the token
       const credential = firebase.auth.GoogleAuthProvider.credential(
         userInfo.idToken,

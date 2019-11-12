@@ -4,6 +4,7 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Restaurant from '../views/Restaurant';
 import SearchRestaurant from '../views/SearchRestaurant';
+import Login from '../../LoginController';
 const AppNavigator = createStackNavigator(
   {
     Restaurant: {
@@ -12,9 +13,12 @@ const AppNavigator = createStackNavigator(
     SearchRestaurant: {
       screen: SearchRestaurant,
     },
+    Login: {
+      screen: Login,
+    },
   },
   {
-    initialRouteName: 'SearchRestaurant',
+    initialRouteName: 'Login',
   },
 );
 
