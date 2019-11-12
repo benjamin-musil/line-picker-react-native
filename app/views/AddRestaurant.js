@@ -10,15 +10,7 @@ import {
   Picker,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import RadioButton from '../components/RadioButton';
-import {gray} from 'ansi-colors';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export default class AddRestaurant extends React.Component {
   constructor(props) {

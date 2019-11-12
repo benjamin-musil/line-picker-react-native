@@ -169,10 +169,12 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              <Restaurant id="5d6ecc7e574d0b16d41b38f0" />
+              {this.state.loggedIn ? (
+                <Restaurant id="5d6ecc7e574d0b16d41b38f0" />
+              ) : null}
 
               {!this.state.loggedIn && <LearnMoreLinks />}
-              {this.state.loggedIn && (
+              {/* {this.state.loggedIn && (
                 <View>
                   <View style={styles.listHeader}>
                     <Text>User Info</Text>
@@ -213,7 +215,7 @@ export default class LoginController extends Component {
                     </Text>
                   </View>
                 </View>
-              )}
+              )} */}
             </View>
           </ScrollView>
         </SafeAreaView>

@@ -8,9 +8,12 @@
 
 import React, {Fragment} from 'react';
 import LoginController from './LoginController';
+import Restaurant from './app/views/Restaurant';
+import SearchRestaurant from './app/views/SearchRestaurant';
 
 const App = () => {
-  return <LoginController />;
+  // return <Restaurant id="5d6ecc7e574d0b16d41b38f0" />;
+  return <SearchRestaurant />;
 };
 
 export default App;
