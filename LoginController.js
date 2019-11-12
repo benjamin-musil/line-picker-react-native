@@ -174,7 +174,7 @@ export default class LoginController extends Component {
               ) : null}
 
               {!this.state.loggedIn && <LearnMoreLinks />}
-              {/* {this.state.loggedIn && (
+              {this.state.loggedIn && (
                 <View>
                   <View style={styles.listHeader}>
                     <Text>User Info</Text>
@@ -215,7 +215,7 @@ export default class LoginController extends Component {
                     </Text>
                   </View>
                 </View>
-              )} */}
+              )}
             </View>
           </ScrollView>
         </SafeAreaView>
