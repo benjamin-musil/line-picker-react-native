@@ -169,9 +169,6 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              {this.state.loggedIn ? (
-                <Restaurant id="5d6ecc7e574d0b16d41b38f0" />
-              ) : null}
 
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
