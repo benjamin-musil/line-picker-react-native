@@ -52,7 +52,15 @@ export default class Restaurant extends React.Component {
             restaurant.address,
             restaurant.wait_times,
             <Image style={styles.image} source={{uri: restaurant.images[0]}} />,
-            <Button style={styles.button} title="GoTo" />,
+            <Button
+              style={styles.button}
+              title="GoTo"
+              onPress={() =>
+                this.props.navigation.navigate('Restaurant', {
+                  id: restaurant.id,
+                })
+              }
+            />,
           ];
           arr.push(rest);
         });

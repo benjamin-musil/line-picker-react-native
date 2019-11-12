@@ -15,7 +15,10 @@ export default class Restaurant extends React.Component {
     };
   }
   componentDidMount = () => {
-    fetch('http://10.0.2.2:5000/mobile/restaurant/' + this.props.id)
+    fetch(
+      'http://10.0.2.2:5000/mobile/restaurant/' +
+        this.props.navigation.getParam('id', 'NO-ID'),
+    )
       .then(response => response.json())
       .then(response => {
         console.log(response);
