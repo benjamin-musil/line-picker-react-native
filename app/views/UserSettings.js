@@ -23,6 +23,7 @@ import {
 import RadioButton from '../components/RadioButton';
 import {gray} from 'ansi-colors';
 import moment from 'moment';
+
  */
 
 export default class UserSettings extends React.Component {
@@ -44,7 +45,15 @@ export default class UserSettings extends React.Component {
             style={styles.head}
             textStyle={styles.text}
           />
-          <Rows data={[this.state.email]} textStyle={styles.text} />
+          <Rows
+            data={[
+              this.state.email,
+              this.state.user_id,
+              this.state.favorite_food,
+            ]}
+            textStyle={styles.text}
+            style={styles.row}
+          />
         </Table>
       </View>
     );

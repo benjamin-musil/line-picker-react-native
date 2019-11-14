@@ -75,11 +75,13 @@ export default class LoginController extends Component {
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson);
+          console.log(responseJson.user);
           this.setState({
-            email: responseJson.email,
-            user_id: responseJson.user_id,
-            favorite_food: responseJson.favorite_food,
+            email: responseJson.user.email,
+            user_id: responseJson.user.user_id,
+            favorite_food: responseJson.user.favorite_food,
           });
+          console.log(this.state);
         });
 
       console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
@@ -106,6 +108,7 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
+      console.log(this.state);
       console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -128,6 +131,7 @@ export default class LoginController extends Component {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({userInfo});
+      console.log(this.state);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
@@ -187,8 +191,12 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              <UserSettings email={this.state.email} />
-
+              <UserSettings
+                email={this.state.email}
+                user_id={this.state.user_id}
+                favorite_food={this.state.favorite_food}
+              />
+              /* this.state.email */
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
