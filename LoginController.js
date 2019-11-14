@@ -24,6 +24,7 @@ import {
 } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
 import Restaurant from './app/views/Restaurant';
+import UserSettings from './app/views/UserSettings';
 
 export default class LoginController extends Component {
   constructor(props) {
@@ -64,6 +65,22 @@ export default class LoginController extends Component {
       const firebaseUserCredential = await firebase
         .auth()
         .signInWithCredential(credential);
+
+      fetch('https://apt-line-picker.appspot.com/mobile/user-settings', {
+        method: 'GET',
+        headers: {
+          token: userInfo.idToken,
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(responseJson);
+          this.setState({
+            email: responseJson.email,
+            user_id: responseJson.user_id,
+            favorite_food: responseJson.favorite_food,
+          });
+        });
 
       console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
@@ -170,6 +187,7 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
+              <UserSettings email={this.state.email} />
 
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
