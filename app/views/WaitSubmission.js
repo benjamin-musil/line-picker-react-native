@@ -1,84 +1,31 @@
-import React from 'react';
-import {StyleSheet, ScrollView, View, Text, Button, Image} from 'react-native';
+import React,  { Component } from 'react';
+import {StyleSheet, ScrollView, View, Text, TextInput, Button, Image} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import moment from 'moment';
 
-export default class Restaurant extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      address: '',
-      waitTimes: [],
-      images: [],
-    };
-  }
-  componentDidMount = () => {
-    fetch(
-      'http://10.0.0.3:5000/mobile/restaurant/' +
-        this.props.navigation.getParam('id', 'NO-ID'),
-    )
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-        let waitTimes = [];
-        response.wait_times.forEach(element => {
-          waitTimes.push([
-            element[0],
-            moment(element[1]).format('M-DD-YYYY HH:MM'),
-            element[2],
-          ]);
-        });
-        this.setState({
-          name: response.name,
-          address: response.address,
-          waitTimes,
-          images: response.images,
-        });
-      });
+export default class WaitSubmission extends React.Component {
+  static navigationOptions = {
+    title: 'WaitSubmission'
   };
 
   render() {
     return (
       <View>
-        <Text style={styles.sectionTitle}>{this.state.name}</Text>
-        <Text>{this.state.address}</Text>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.center}
-          contentInsetAdjustmentBehavior="automatic">
-          {this.state.images.map(image => {
-            return <Image style={styles.image} source={{uri: image}} />;
-          })}
-        </ScrollView>
         <ScrollView
           style={styles.scrollView}
           contentInsetAdjustmentBehavior="automatic">
-          <Table style={styles.container}>
-            <Row
-              data={['Time', 'Date Submitted', 'Submitted by']}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows
-              data={this.state.waitTimes}
-              style={styles.row}
-              textStyle={styles.text}
-            />
-          </Table>
+              <Text>Camera API Here</Text>
+              <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+              />
         </ScrollView>
           <Button
-            title="Submit Time"
+            title="Submit"
           />
       </View>
     );
   }
 }
-
-Restaurant.defaultProps = {
-  id: '5d6ecc7e574d0b16d41b38f0',
-};
 
 const styles = StyleSheet.create({
   sectionTitle: {
