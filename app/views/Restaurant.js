@@ -5,6 +5,10 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import moment from 'moment';
 
 export default class Restaurant extends React.Component {
+  static navigationOptions = {
+    title: 'Restaurant'
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +20,7 @@ export default class Restaurant extends React.Component {
   }
   componentDidMount = () => {
     fetch(
-      'http://10.0.2.2:5000/mobile/restaurant/' +
+      'http://10.0.0.3:5000/mobile/restaurant/' +
         this.props.navigation.getParam('id', 'NO-ID'),
     )
       .then(response => response.json())
@@ -40,6 +44,7 @@ export default class Restaurant extends React.Component {
   };
 
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View>
         <Text style={styles.sectionTitle}>{this.state.name}</Text>
@@ -68,7 +73,10 @@ export default class Restaurant extends React.Component {
             />
           </Table>
         </ScrollView>
-        <Button title="Submit Time" />
+          <Button
+            title="Submit Wait Time"
+            onPress={() => navigate('WaitSubmission', {name: 'WaitSubmission'})}
+          />
       </View>
     );
   }
