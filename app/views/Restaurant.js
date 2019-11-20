@@ -16,8 +16,17 @@ export default class Restaurant extends React.Component {
   }
   componentDidMount = () => {
     fetch(
-      'http://10.0.2.2:5000/mobile/restaurant/' +
+      'https://apt-line-picker.appspot.com/mobile/restaurant/' +
         this.props.navigation.getParam('id', 'NO-ID'),
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+          mode: 'no-cors',
+          cache: 'no-cache',
+        },
+      },
     )
       .then(response => response.json())
       .then(response => {

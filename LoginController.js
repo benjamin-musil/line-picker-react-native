@@ -65,7 +65,7 @@ export default class LoginController extends Component {
       const firebaseUserCredential = await firebase
         .auth()
         .signInWithCredential(credential);
-
+      this.setState({userInfo});
       fetch('https://apt-line-picker.appspot.com/mobile/user-settings', {
         method: 'GET',
         headers: {
@@ -236,6 +236,16 @@ export default class LoginController extends Component {
                         this.state.userInfo.user &&
                         this.state.userInfo.user.id}
                     </Text>
+                    <Text>{this.state.userInfo.idToken}</Text>
+                    <Button
+                      style={styles.button}
+                      title="Search"
+                      onPress={() =>
+                        this.props.navigation.navigate('SearchRestaurant', {
+                          token: this.state.userInfo.idToken,
+                        })
+                      }
+                    />
                   </View>
                 </View>
               )}
