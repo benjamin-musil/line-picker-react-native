@@ -32,13 +32,17 @@ export default class Restaurant extends React.Component {
       .then(response => {
         console.log(response);
         let waitTimes = [];
-        response.wait_times.forEach(element => {
-          waitTimes.push([
-            element[0],
-            moment(element[1]).format('M-DD-YYYY HH:MM'),
-            element[2],
-          ]);
-        });
+        if (response.wait_times) {
+          response.wait_times.forEach(element => {
+            waitTimes.push([
+              element[0],
+              moment(element[1]).format('M-DD-YYYY HH:MM'),
+              element[2],
+            ]);
+          });
+        } else {
+          waitTimes.push([['None'], [''], ['']]);
+        }
         this.setState({
           name: response.name,
           address: response.address,

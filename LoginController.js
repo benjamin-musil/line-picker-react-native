@@ -246,6 +246,15 @@ export default class LoginController extends Component {
                         })
                       }
                     />
+                    <Button
+                      style={styles.button}
+                      title="Add Restaurant"
+                      onPress={() =>
+                        this.props.navigation.navigate('AddRestaurant', {
+                          token: this.state.userInfo.idToken,
+                        })
+                      }
+                    />
                   </View>
                 </View>
               )}
