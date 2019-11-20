@@ -170,7 +170,6 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
