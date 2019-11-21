@@ -32,6 +32,9 @@ export default class LoginController extends Component {
     this.state = {
       pushData: [],
       loggedIn: false,
+      email: '',
+      user_id: '',
+      favorite_food: '',
     };
   }
   componentDidMount() {
@@ -72,17 +75,21 @@ export default class LoginController extends Component {
           token: userInfo.idToken,
         },
       })
-        .then(response => response.json())
-        .then(responseJson => {
-          console.log(responseJson);
-          console.log(responseJson.user);
-          this.setState({
-            email: responseJson.user.email,
-            user_id: responseJson.user.user_id,
-            favorite_food: responseJson.user.favorite_food,
-          });
-          console.log(this.state);
+        .then(response => response.text())
+        .then(responseText => {
+          console.log(responseText);
         });
+      // .then(response => response.json())
+      // .then(responseJson => {
+      //   console.log(responseJson);
+      //   console.log(responseJson.user);
+      //   this.setState({
+      //     email: responseJson.user.email,
+      //     user_id: responseJson.user.user_id,
+      //     favorite_food: responseJson.user.favorite_food,
+      //   });
+      //   console.log(this.state);
+      // });
 
       console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
@@ -196,7 +203,7 @@ export default class LoginController extends Component {
                 user_id={this.state.user_id}
                 favorite_food={this.state.favorite_food}
               />
-              /* this.state.email */
+
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
