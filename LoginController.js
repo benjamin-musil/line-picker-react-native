@@ -25,7 +25,7 @@ import {
 import firebase from 'react-native-firebase';
 import Restaurant from './app/views/Restaurant';
 import UserSettings from './app/views/UserSettings';
-
+import HomePage from './app/views/HomePage';
 export default class LoginController extends Component {
   constructor(props) {
     super(props);
@@ -74,17 +74,21 @@ export default class LoginController extends Component {
       })
         .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson);
-          console.log(responseJson.user);
+          // console.log(responseJson);
+          // console.log(responseJson.user);
           this.setState({
             email: responseJson.user.email,
             user_id: responseJson.user.user_id,
             favorite_food: responseJson.user.favorite_food,
           });
-          console.log(this.state);
+          // console.log(this.state);
+          //Routing to Home page After success
+          this.props.navigation.navigate('HomePage', {
+            token: this.state.userInfo.idToken,
+          })
         });
 
-      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+      //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -108,8 +112,8 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      console.log(this.state);
-      console.log(userInfo);
+      // console.log(this.state);
+      // console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -131,7 +135,7 @@ export default class LoginController extends Component {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({userInfo});
-      console.log(this.state);
+      //console.log(this.state);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
@@ -151,6 +155,7 @@ export default class LoginController extends Component {
       await GoogleSignin.signOut();
       this.setState({user: null, loggedIn: false}); // Remember to remove the user from your app's state as well
     } catch (error) {
+      alert('error');
       console.error(error);
     }
   };
@@ -231,12 +236,12 @@ export default class LoginController extends Component {
                   </View>
                   <View style={styles.detailContainer}>
                     <Text style={styles.title}>ID</Text>
-                    <Text style={styles.message}>
+                    {/* <Text style={styles.message}>
                       {this.state.userInfo &&
                         this.state.userInfo.user &&
                         this.state.userInfo.user.id}
-                    </Text>
-                    <Text>{this.state.userInfo.idToken}</Text>
+                    </Text> */}
+                    {/* <Text>{this.state.userInfo.idToken}</Text> */}
                     <Button
                       style={styles.button}
                       title="Search"

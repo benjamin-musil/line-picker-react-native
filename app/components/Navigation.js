@@ -6,6 +6,10 @@ import Restaurant from '../views/Restaurant';
 import SearchRestaurant from '../views/SearchRestaurant';
 import AddRestaurant from '../views/AddRestaurant';
 import Login from '../../LoginController';
+import HomePage from '../views/HomePage';
+import UserSettings from '../views/UserSettings';
+import MySubmission from '../views/MySubmission'
+
 const AppNavigator = createStackNavigator(
   {
     Restaurant: {
@@ -19,6 +23,15 @@ const AppNavigator = createStackNavigator(
     },
     AddRestaurant: {
       screen: AddRestaurant,
+    },
+    HomePage: {
+      screen: HomePage,
+    },
+    UserSettings: {
+      screen: UserSettings,
+    },
+    MySubmission: {
+      screen: MySubmission,
     },
   },
   {
