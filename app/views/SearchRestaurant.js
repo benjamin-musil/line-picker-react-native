@@ -31,18 +31,22 @@ export default class Restaurant extends React.Component {
   handleSearch = () => {
     console.log(this.state.search);
     this.setState({loading: true});
-    fetch('http://10.0.2.2:5000/mobile/ListAllRestaurant/Search', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        mode: 'no-cors',
-        cache: 'no-cache',
+    fetch(
+      'https://apt-line-picker.appspot.com/mobile/ListAllRestaurant/Search',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+          mode: 'no-cors',
+          cache: 'no-cache',
+        },
+        body: JSON.stringify({
+          restaurant_tag: this.state.search,
+        }),
       },
-      body: JSON.stringify({
-        restaurant_tag: this.state.search,
-      }),
-    })
+    )
       .then(response => response.json())
       .then(response => {
         let arr = [];
@@ -58,6 +62,7 @@ export default class Restaurant extends React.Component {
               onPress={() =>
                 this.props.navigation.navigate('Restaurant', {
                   id: restaurant.id,
+                  token: this.props.navigation.getParam('token', 'NO-TOKEN'),
                 })
               }
             />,
@@ -65,6 +70,9 @@ export default class Restaurant extends React.Component {
           arr.push(rest);
         });
         this.setState({restaurants: arr, loading: false});
+      })
+      .catch(error => {
+        console.log(error);
       });
   };
 

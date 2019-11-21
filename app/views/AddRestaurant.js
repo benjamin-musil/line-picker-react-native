@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   Button,
   TextInput,
   Picker,
+  ActivityIndicator,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -21,6 +20,8 @@ export default class AddRestaurant extends React.Component {
       values: [],
       categories: [],
       selected: 'select one',
+      submitting: false,
+      error: '',
     };
   }
   componentDidMount = () => {
@@ -33,22 +34,54 @@ export default class AddRestaurant extends React.Component {
   };
 
   _handleNameChange = e => {
-    this.setState({name: e.target.value});
+    this.setState({name: e});
   };
 
   _handleAddressChange = e => {
-    this.setState({address: e.target.value});
+    this.setState({address: e});
+  };
+
+  _handleSubmit = () => {
+    this.setState({submitting: true});
+    fetch('https://apt-line-picker.appspot.com/mobile/submit-restaurant', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+        mode: 'no-cors',
+        cache: 'no-cache',
+      },
+      body: JSON.stringify({
+        Name: this.state.name,
+        Address: this.state.address,
+        category: this.state.selected,
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.props.navigation.navigate('Restaurant', {
+          id: response.id,
+          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+        });
+      })
+      .catch(error => {
+        this.setState({error, submitting: false});
+      });
   };
 
   render() {
     return (
       <View>
+        {this.state.error ? (
+          <Text style={styles.sectionTitle}>{this.state.error}</Text>
+        ) : null}
         <Text style={styles.sectionTitle}>Add a Restaurant</Text>
         <Text style={styles.inputTitle}>Name of the Restaurant</Text>
         <TextInput
           style={styles.textInput}
           value={this.state.name}
-          onChange={this._handleNameChange}
+          onChangeText={this._handleNameChange}
           placeholder="New Restaurant"
         />
         <Text style={styles.inputTitle}>Address of the Restaurant</Text>
@@ -56,7 +89,7 @@ export default class AddRestaurant extends React.Component {
           style={styles.textInput}
           placeholder="Restaurant Address"
           value={this.state.address}
-          onChange={this._handleAddressChange}
+          onChangeText={this._handleAddressChange}
         />
         <Text style={styles.pickerTitle}>Type of Restaurant</Text>
         <Picker
@@ -75,9 +108,12 @@ export default class AddRestaurant extends React.Component {
           disabled={
             this.state.name === '' ||
             this.state.address === '' ||
-            this.state.selected === 'select one'
+            this.state.selected === 'select one' ||
+            this.state.submitting
           }
+          onPress={this._handleSubmit}
         />
+        {this.state.submitting ? <ActivityIndicator /> : null}
       </View>
     );
   }
