@@ -6,11 +6,12 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
-import LoginController from './LoginController';
+import React from 'react';
+
+import AppContainer from './app/components/Navigation';
 
 const App = () => {
-  return <LoginController />;
+  return <AppContainer />;
 };
 
 export default App;

@@ -23,6 +23,8 @@ import {
   statusCodes,
 } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
+import Restaurant from './app/views/Restaurant';
+import UserSettings from './app/views/UserSettings';
 
 export default class LoginController extends Component {
   constructor(props) {
@@ -52,7 +54,8 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      console.log(userInfo);
+      console.log('-------------');
+      console.log(userInfo.idToken);
       // create a new firebase credential with the token
       const credential = firebase.auth.GoogleAuthProvider.credential(
         userInfo.idToken,
@@ -62,6 +65,24 @@ export default class LoginController extends Component {
       const firebaseUserCredential = await firebase
         .auth()
         .signInWithCredential(credential);
+      this.setState({userInfo});
+      fetch('https://apt-line-picker.appspot.com/mobile/user-settings', {
+        method: 'GET',
+        headers: {
+          token: userInfo.idToken,
+        },
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(responseJson);
+          console.log(responseJson.user);
+          this.setState({
+            email: responseJson.user.email,
+            user_id: responseJson.user.user_id,
+            favorite_food: responseJson.user.favorite_food,
+          });
+          console.log(this.state);
+        });
 
       console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (error) {
@@ -87,6 +108,7 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
+      console.log(this.state);
       console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -109,6 +131,7 @@ export default class LoginController extends Component {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({userInfo});
+      console.log(this.state);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
@@ -168,7 +191,11 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-
+              <UserSettings
+                email={this.state.email}
+                user_id={this.state.user_id}
+                favorite_food={this.state.favorite_food}
+              />
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
@@ -209,6 +236,25 @@ export default class LoginController extends Component {
                         this.state.userInfo.user &&
                         this.state.userInfo.user.id}
                     </Text>
+                    <Text>{this.state.userInfo.idToken}</Text>
+                    <Button
+                      style={styles.button}
+                      title="Search"
+                      onPress={() =>
+                        this.props.navigation.navigate('SearchRestaurant', {
+                          token: this.state.userInfo.idToken,
+                        })
+                      }
+                    />
+                    <Button
+                      style={styles.button}
+                      title="Add Restaurant"
+                      onPress={() =>
+                        this.props.navigation.navigate('AddRestaurant', {
+                          token: this.state.userInfo.idToken,
+                        })
+                      }
+                    />
                   </View>
                 </View>
               )}
