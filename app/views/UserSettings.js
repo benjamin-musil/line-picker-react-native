@@ -45,11 +45,11 @@ export default class UserSettings extends React.Component {
             style={styles.head}
             textStyle={styles.text}
           />
-          <Rows
+          <Row
             data={[
-              this.state.email,
-              this.state.user_id,
-              this.state.favorite_food,
+              this.props.email,
+              this.props.user_id,
+              this.props.favorite_food,
             ]}
             textStyle={styles.text}
             style={styles.row}

@@ -199,7 +199,6 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              // Heres where we send to user settings
               <UserSettings
                 email={this.state.email}
                 user_id={this.state.user_id}
