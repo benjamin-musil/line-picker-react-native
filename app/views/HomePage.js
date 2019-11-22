@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, Button, StyleSheet } from 'react-native';
 
- 
+
 
 
 const styles = StyleSheet.create({
@@ -28,9 +28,10 @@ export default class HomePage extends Component {
                         onPress={() =>
                             this.props.navigation.navigate('Login')
                         } />
+             
                 </View>
                 <View style={styles.ButtonPadding}>
-                    <Button  
+                    <Button
                         title="Add Restaurant"
                         onPress={() =>
                             this.props.navigation.navigate('AddRestaurant')
@@ -57,9 +58,14 @@ export default class HomePage extends Component {
                     <Button
                         title="My Submissions"
                         onPress={() =>
-                            this.props.navigation.navigate('MySubmission')
+                            this.props.navigation.navigate('MySubmission', {
+                                token: this.props.navigation.getParam('token', 'NO-ID'),
+                                userid: this.props.navigation.getParam('userid', 'NO-UserID'),
+                            })
+
                         }
                     />
+                    {/* <Text>{this.props.navigation.getParam('userid','NoUserID')}</Text> */}
                 </View>
             </View>
         );

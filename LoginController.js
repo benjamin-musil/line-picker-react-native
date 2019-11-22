@@ -85,6 +85,7 @@ export default class LoginController extends Component {
           //Routing to Home page After success
           this.props.navigation.navigate('HomePage', {
             token: this.state.userInfo.idToken,
+            userid:  this.state.user_id
           })
         });
 
@@ -236,12 +237,12 @@ export default class LoginController extends Component {
                   </View>
                   <View style={styles.detailContainer}>
                     <Text style={styles.title}>ID</Text>
-                    {/* <Text style={styles.message}>
+                    <Text style={styles.message}>
                       {this.state.userInfo &&
                         this.state.userInfo.user &&
                         this.state.userInfo.user.id}
-                    </Text> */}
-                    {/* <Text>{this.state.userInfo.idToken}</Text> */}
+                    </Text>
+                    <Text>{this.state.userInfo.idToken}</Text>
                     <Button
                       style={styles.button}
                       title="Search"
@@ -256,7 +257,7 @@ export default class LoginController extends Component {
                       title="Add Restaurant"
                       onPress={() =>
                         this.props.navigation.navigate('AddRestaurant', {
-                          token: this.state.userInfo.idToken,
+                          token: this.state.userInfo.idToken
                         })
                       }
                     />
