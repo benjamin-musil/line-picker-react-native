@@ -1,5 +1,5 @@
 /**
- * Sample React Native App MySubmissionStart
+ * Sample React Native App
  * https://github.com/facebook/react-native
  *
  * @format
