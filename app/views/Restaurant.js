@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ScrollView, View, Text, Button, Image} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, Button, Image,TouchableOpacity} from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import moment from 'moment';
@@ -55,6 +55,12 @@ export default class Restaurant extends React.Component {
   render() {
     return (
       <View>
+          <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                          this.props.navigation.toggleDrawer
+                    } >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
         <Text style={styles.sectionTitle}>{this.state.name}</Text>
         <Text>{this.state.address}</Text>
         <ScrollView

@@ -8,7 +8,7 @@ import {
   Button,
   TextInput,
   Image,
-  Picker,
+  Picker,TouchableOpacity,
 } from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {
@@ -18,7 +18,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+ 
 /*
 import RadioButton from '../components/RadioButton';
 import {gray} from 'ansi-colors';
@@ -39,6 +39,12 @@ export default class UserSettings extends React.Component {
   render() {
     return (
       <View>
+           <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}} 
+            onPress={() =>  this.props.navigation.toggleDrawer()                    } 
+                    >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
         <Table style={styles.container}>
           <Row
             data={['Email', 'User ID', 'Favorite Food']}

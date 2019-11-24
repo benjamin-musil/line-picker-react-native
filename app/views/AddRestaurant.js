@@ -6,7 +6,7 @@ import {
   Button,
   TextInput,
   Picker,
-  ActivityIndicator,
+  ActivityIndicator,Image,TouchableOpacity,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -73,6 +73,12 @@ export default class AddRestaurant extends React.Component {
   render() {
     return (
       <View>
+            <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                          this.props.navigation.toggleDrawer
+                    } >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
         {this.state.error ? (
           <Text style={styles.sectionTitle}>{this.state.error}</Text>
         ) : null}

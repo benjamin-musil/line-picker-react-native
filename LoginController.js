@@ -8,7 +8,9 @@ import {
   StatusBar,
   Button,
   Image,
+  AsyncStorage
 } from 'react-native';
+ 
 
 import {
   Header,
@@ -25,7 +27,7 @@ import {
 import firebase from 'react-native-firebase';
 import Restaurant from './app/views/Restaurant';
 import UserSettings from './app/views/UserSettings';
-
+import HomePage from './app/views/HomePage';
 export default class LoginController extends Component {
   constructor(props) {
     super(props);
@@ -77,17 +79,21 @@ export default class LoginController extends Component {
       })
         .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson);
-          console.log(responseJson.user);
           this.setState({
             email: responseJson.user.email,
             user_id: responseJson.user.user_id,
             favorite_food: responseJson.user.favorite_food,
           });
-          console.log(this.state);
-        });
 
-      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+          //Routing to Home page After success
+          AsyncStorage.setItem('userid', this.state.user_id);
+          AsyncStorage.setItem('token', this.state.userInfo.idToken);
+          this.props.navigation.navigate('HomePage', {
+            token: this.state.userInfo.idToken,
+            userid:  this.state.user_id
+          })
+        });
+      
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,8 +117,8 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      console.log(this.state);
-      console.log(userInfo);
+      // console.log(this.state);
+      // console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -134,7 +140,6 @@ export default class LoginController extends Component {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({userInfo});
-      console.log(this.state);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
@@ -154,6 +159,7 @@ export default class LoginController extends Component {
       await GoogleSignin.signOut();
       this.setState({user: null, loggedIn: false}); // Remember to remove the user from your app's state as well
     } catch (error) {
+      alert('error');
       console.error(error);
     }
   };
@@ -254,7 +260,7 @@ export default class LoginController extends Component {
                       title="Add Restaurant"
                       onPress={() =>
                         this.props.navigation.navigate('AddRestaurant', {
-                          token: this.state.userInfo.idToken,
+                          token: this.state.userInfo.idToken
                         })
                       }
                     />
