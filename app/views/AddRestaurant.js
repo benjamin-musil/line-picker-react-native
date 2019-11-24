@@ -73,6 +73,15 @@ export default class AddRestaurant extends React.Component {
   render() {
     return (
       <View>
+         <Button
+                        title="Open Drawer"
+                        onPress={() =>
+                        {
+                            this.props.navigation.toggleDrawer()
+                        }
+
+                        }
+                    />
         {this.state.error ? (
           <Text style={styles.sectionTitle}>{this.state.error}</Text>
         ) : null}

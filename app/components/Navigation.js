@@ -9,34 +9,63 @@ import Login from '../../LoginController';
 import HomePage from '../views/HomePage';
 import UserSettings from '../views/UserSettings';
 import MySubmission from '../views/MySubmission'
+import { createDrawerNavigator } from 'react-navigation-drawer';
 
-const AppNavigator = createStackNavigator(
-  {
-    Restaurant: {
-      screen: Restaurant,
-    },
-    SearchRestaurant: {
-      screen: SearchRestaurant,
-    },
-    Login: {
-      screen: Login,
-    },
-    AddRestaurant: {
-      screen: AddRestaurant,
-    },
-    HomePage: {
-      screen: HomePage,
-    },
-    UserSettings: {
-      screen: UserSettings,
-    },
-    MySubmission: {
-      screen: MySubmission,
-    },
-  },
-  {
-    initialRouteName: 'Login',
-  },
-);
+// const AppNavigator = createStackNavigator(
+//   {
+//     Restaurant: {
+//       screen: Restaurant,
+//     },
+//     SearchRestaurant: {
+//       screen: SearchRestaurant,
+//     },
+//     Login: {
+//       screen: Login,
+//     },
+//     AddRestaurant: {
+//       screen: AddRestaurant,
+//     },
+//     HomePage: {
+//       screen: HomePage,
+//     },
+//     UserSettings: {
+//       screen: UserSettings,
+//     },
+//     MySubmission: {
+//       screen: MySubmission,
+//     },
+//   },
+//   {
+//     initialRouteName: 'Login',
+//   },
+// );
 
+const AppNavigator = createDrawerNavigator(
+    {
+      Restaurant: {
+        screen: Restaurant,
+      },
+      SearchRestaurant: {
+        screen: SearchRestaurant,
+      },
+      Login: {
+        screen: Login,
+      },
+      AddRestaurant: {
+        screen: AddRestaurant,
+      },
+      HomePage: {
+        screen: HomePage,
+      },
+      UserSettings: {
+        screen: UserSettings,
+      },
+      MySubmission: {
+        screen: MySubmission,
+      },
+    },
+    {
+      initialRouteName: 'Login',
+    },
+  );
 export default createAppContainer(AppNavigator);

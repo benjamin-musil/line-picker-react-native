@@ -27,6 +27,15 @@ import moment from 'moment';
  */
 
 export default class UserSettings extends React.Component {
+  static navigationOptions = {
+    drawerLabel: 'Notifications',
+    // drawerIcon: ({ tintColor }) => (
+    //   <Image
+    //     source={require('./notif-icon.png')}
+    //     style={[styles.icon, { tintColor: tintColor }]}
+    //   />
+    // ),
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +48,15 @@ export default class UserSettings extends React.Component {
   render() {
     return (
       <View>
+         <Button
+                        title="Open Drawer"
+                        onPress={() =>
+                        {
+                            this.props.navigation.toggleDrawer()
+                        }
+
+                        }
+                    />
         <Table style={styles.container}>
           <Row
             data={['Email', 'User ID', 'Favorite Food']}

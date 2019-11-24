@@ -55,6 +55,15 @@ export default class Restaurant extends React.Component {
   render() {
     return (
       <View>
+         <Button
+                        title="Open Drawer"
+                        onPress={() =>
+                        {
+                            this.props.navigation.toggleDrawer()
+                        }
+
+                        }
+                    />
         <Text style={styles.sectionTitle}>{this.state.name}</Text>
         <Text>{this.state.address}</Text>
         <ScrollView

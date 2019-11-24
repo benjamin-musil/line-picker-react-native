@@ -8,6 +8,7 @@ import {
   StatusBar,
   Button,
   Image,
+  AsyncStorage
 } from 'react-native';
 
 import {
@@ -83,6 +84,13 @@ export default class LoginController extends Component {
           });
           // console.log(this.state);
           //Routing to Home page After success
+
+           AsyncStorage.setItem('userid', this.state.user_id);
+           AsyncStorage.setItem('token', this.state.userInfo.idToken);
+        // await  AsyncStorage.multiSet([
+        //     ["token", this.state.userInfo.idToken],
+        //     ["userid", this.state.user_id]
+        // ])
           this.props.navigation.navigate('HomePage', {
             token: this.state.userInfo.idToken,
             userid:  this.state.user_id
