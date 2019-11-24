@@ -7,7 +7,7 @@ import {
   Button,
   Image,
   TextInput,
-  ActivityIndicator,
+  ActivityIndicator,TouchableOpacity,
 } from 'react-native';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -79,15 +79,12 @@ export default class Restaurant extends React.Component {
   render() {
     return (
       <View>
-         <Button
-                        title="Open Drawer"
-                        onPress={() =>
-                        {
-                            this.props.navigation.toggleDrawer()
-                        }
-
-                        }
-                    />
+         <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                          this.props.navigation.toggleDrawer
+                    } >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
         <Text style={styles.sectionTitle}>Search Restaurants</Text>
         <TextInput
           placeholder="chinese"

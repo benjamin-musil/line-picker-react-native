@@ -10,6 +10,7 @@ import {
   Image,
   AsyncStorage
 } from 'react-native';
+ 
 
 import {
   Header,

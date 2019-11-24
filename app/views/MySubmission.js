@@ -3,7 +3,7 @@ import {
     Text, TextInput, View, Button, StyleSheet,
     ScrollView,
     Image,
-    ActivityIndicator,AsyncStorage
+    ActivityIndicator,AsyncStorage,TouchableOpacity,
 } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import moment from 'moment';
@@ -27,13 +27,12 @@ export default class MySubmission extends Component {
      let   userId = await AsyncStorage.getItem('userid')  ;
      let   token = await AsyncStorage.getItem('token')  ;
      fetch(            
-        'http://10.0.2.2:5000/mobile/'+userId+'/mysubmissions',
-     //    'https://apt-line-picker.appspot.com/mobile/Benjamin_Musil/mysubmissions',
+        'https://apt-line-picker.appspot.com/mobile/'+userId+'/mysubmissions',
          {
              method: 'GET',
              headers: {
                  'Content-Type': 'application/json',
-                 token:token,// this.props.navigation.getParam('token', 'NO-TOKEN'),
+                 token:token,
              },
          },
      )
@@ -72,15 +71,12 @@ export default class MySubmission extends Component {
         return (
             <View>
                      <NavigationEvents onDidFocus={()=>this.PageLoadEvent()}/>
-                 <Button
-                        title="Open Drawer"
-                        onPress={() =>
-                        {
-                            this.props.navigation.toggleDrawer()
-                        }
-
-                        }
-                    />
+                     <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                          this.props.navigation.toggleDrawer
+                    } >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
                 <View style={{ borderColor: 'light grey', borderWidth: 0, fontSize: 1, }} >
                     <ScrollView
                         style={styles.scrollView}

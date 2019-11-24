@@ -41,31 +41,31 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 // );
 
 const AppNavigator = createDrawerNavigator(
-    {
-      Restaurant: {
-        screen: Restaurant,
-      },
-      SearchRestaurant: {
-        screen: SearchRestaurant,
-      },
-      Login: {
-        screen: Login,
-      },
-      AddRestaurant: {
-        screen: AddRestaurant,
-      },
-      HomePage: {
-        screen: HomePage,
-      },
-      UserSettings: {
-        screen: UserSettings,
-      },
-      MySubmission: {
-        screen: MySubmission,
-      },
+  {
+    Restaurant: {
+      screen: Restaurant,
     },
-    {
-      initialRouteName: 'Login',
+    SearchRestaurant: {
+      screen: SearchRestaurant,
     },
-  );
+    Login: {
+      screen: Login,
+    },
+    AddRestaurant: {
+      screen: AddRestaurant,
+    },
+    HomePage: {
+      screen: HomePage,
+    },
+    UserSettings: {
+      screen: UserSettings,
+    },
+    MySubmission: {
+      screen: MySubmission,
+    },
+  },
+  {
+    initialRouteName: 'Login',
+  },
+);
 export default createAppContainer(AppNavigator);

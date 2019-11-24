@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, TextInput, View, Button, StyleSheet ,AsyncStorage} from 'react-native';
+import { Text, TextInput, View, Button, StyleSheet ,AsyncStorage, Image,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { NavigationEvents } from 'react-navigation';
+ 
 
 
 
@@ -15,26 +16,17 @@ export default class HomePage extends Component {
     
     static navigationOptions = {
         drawerLabel: 'Home',
-        // drawerIcon: ({ tintColor }) => (
-        //   <Image
-        //     source={require('./chats-icon.png')}
-        //     style={[styles.icon, { tintColor: tintColor }]}
-        //   />
-        // ),
       };
     render() {
         return (
             <View >
-                  <Button
-                        title="Open Drawer"
-                        onPress={() =>
-                        {
-                            
-                            this.props.navigation.toggleDrawer()
-                        }
-
-                        }
-                    />
+                <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                          this.props.navigation.toggleDrawer
+                    } >
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                 />
+                 </TouchableOpacity>
+                     
                 <View style={styles.ButtonPadding}>
          
                     <Button
