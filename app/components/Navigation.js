@@ -10,7 +10,6 @@ import HomePage from '../views/HomePage';
 import UserSettings from '../views/UserSettings';
 import MySubmission from '../views/MySubmission'
 import { createDrawerNavigator } from 'react-navigation-drawer';
- 
 
 const AppNavigator = createDrawerNavigator(
   {

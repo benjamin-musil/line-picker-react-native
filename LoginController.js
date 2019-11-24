@@ -34,6 +34,9 @@ export default class LoginController extends Component {
     this.state = {
       pushData: [],
       loggedIn: false,
+      email: '',
+      user_id: '',
+      favorite_food: '',
     };
   }
   componentDidMount() {
@@ -83,14 +86,13 @@ export default class LoginController extends Component {
           });
 
           //Routing to Home page After success
-           AsyncStorage.setItem('userid', this.state.user_id);
-           AsyncStorage.setItem('token', this.state.userInfo.idToken);
+          AsyncStorage.setItem('userid', this.state.user_id);
+          AsyncStorage.setItem('token', this.state.userInfo.idToken);
           this.props.navigation.navigate('HomePage', {
             token: this.state.userInfo.idToken,
             userid:  this.state.user_id
           })
         });
-
 
     } catch (error) {
       console.log(error);
