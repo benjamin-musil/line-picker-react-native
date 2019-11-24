@@ -32,6 +32,9 @@ export default class LoginController extends Component {
     this.state = {
       pushData: [],
       loggedIn: false,
+      email: '',
+      user_id: '',
+      favorite_food: '',
     };
   }
   componentDidMount() {
