@@ -75,11 +75,6 @@ export default class LoginController extends Component {
           token: userInfo.idToken,
         },
       })
-        // .then(response => response.text())
-        // .then(responseText => {
-        //   console.log(responseText);
-        // });
-        // Robin's stuff starts here but doesn't work :(
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson);
