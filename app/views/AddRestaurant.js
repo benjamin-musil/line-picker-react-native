@@ -73,10 +73,10 @@ export default class AddRestaurant extends React.Component {
   render() {
     return (
       <View>
-            <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+            <TouchableOpacity  activeOpacity={.5}  style={styles.MenuIcon}   onPress={
                           this.props.navigation.toggleDrawer
                     } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}               
                  />
                  </TouchableOpacity>
         {this.state.error ? (
@@ -147,4 +147,5 @@ const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 18,
   },
+  MenuIcon: {width:40,height:40  },
 });
