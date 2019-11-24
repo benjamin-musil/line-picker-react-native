@@ -20,10 +20,10 @@ export default class HomePage extends Component {
     render() {
         return (
             <View >
-                <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                <TouchableOpacity  activeOpacity={.5} style={styles.MenuIcon}   onPress={
                           this.props.navigation.toggleDrawer
                     } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}            
                  />
                  </TouchableOpacity>
                      
@@ -64,11 +64,10 @@ export default class HomePage extends Component {
                     <Button
                         title="My Submissions"
                         onPress={() =>
-                            this.props.navigation.navigate('MySubmission', {})
+                            this.props.navigation.navigate('MySubmission')
 
                         }
                     />
-                      {/* <Icon name="md-menu" size={50} style={{width:10}} /> */}
                     
                 </View>
             </View>
@@ -87,4 +86,5 @@ const styles = StyleSheet.create({
     red: {
         color: 'red',
     },
+    MenuIcon: {width:40,height:40  },
 });

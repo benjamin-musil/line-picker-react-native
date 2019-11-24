@@ -71,10 +71,10 @@ export default class MySubmission extends Component {
         return (
             <View>
                      <NavigationEvents onDidFocus={()=>this.PageLoadEvent()}/>
-                     <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+                     <TouchableOpacity  activeOpacity={.5}  style={styles.MenuIcon}  onPress={
                           this.props.navigation.toggleDrawer
                     } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}  style={styles.MenuIcon}                
                  />
                  </TouchableOpacity>
                 <View style={{ borderColor: 'light grey', borderWidth: 0, fontSize: 1, }} >
@@ -151,4 +151,6 @@ const styles = StyleSheet.create({
         height: 100,
         width: 50,
     },
+    MenuIcon: {width:40,height:40
+    }
 });

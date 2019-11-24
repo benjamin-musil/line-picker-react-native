@@ -93,7 +93,7 @@ export default class LoginController extends Component {
             userid:  this.state.user_id
           })
         });
-      
+
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -117,8 +117,6 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      // console.log(this.state);
-      // console.log(userInfo);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow

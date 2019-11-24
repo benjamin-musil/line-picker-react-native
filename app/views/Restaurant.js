@@ -55,10 +55,10 @@ export default class Restaurant extends React.Component {
   render() {
     return (
       <View>
-          <TouchableOpacity  activeOpacity={.5}  style={{borderWidth:0, borderColor:'red',width:40,height:40}}  onPress={
+          <TouchableOpacity  activeOpacity={.5} style={styles.MenuIcon}   onPress={
                           this.props.navigation.toggleDrawer
                     } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={{width:40,height:40}}                
+                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}               
                  />
                  </TouchableOpacity>
         <Text style={styles.sectionTitle}>{this.state.name}</Text>
@@ -132,4 +132,5 @@ const styles = StyleSheet.create({
   head: {height: 40, backgroundColor: '#f1f8ff'},
   row: {height: 28},
   text: {margin: 6, color: 'black'},
+  MenuIcon: {width:40,height:40  },
 });
