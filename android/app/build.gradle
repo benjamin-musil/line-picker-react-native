@@ -134,6 +134,7 @@ android {
         versionCode 1
         versionName "1.0"
         missingDimensionStrategy 'react-native-camera', 'general'
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -180,6 +181,7 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.0'
     implementation project(':@react-native-community_geolocation')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
