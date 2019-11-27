@@ -8,10 +8,8 @@ import {
   StatusBar,
   Button,
   Image,
-  AsyncStorage
 } from 'react-native';
- 
-
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   Header,
   LearnMoreLinks,
@@ -59,8 +57,6 @@ export default class LoginController extends Component {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({userInfo: userInfo, loggedIn: true});
-      console.log('-------------');
-      console.log(userInfo.idToken);
       // create a new firebase credential with the token
       const credential = firebase.auth.GoogleAuthProvider.credential(
         userInfo.idToken,
@@ -88,12 +84,14 @@ export default class LoginController extends Component {
           //Routing to Home page After success
           AsyncStorage.setItem('userid', this.state.user_id);
           AsyncStorage.setItem('token', this.state.userInfo.idToken);
+
+          AsyncStorage.setItem('email', responseJson.user.email);
+          AsyncStorage.setItem('favoriteFood', responseJson.user.favorite_food);
           this.props.navigation.navigate('HomePage', {
             token: this.state.userInfo.idToken,
-            userid:  this.state.user_id
-          })
+            userid: this.state.user_id,
+          });
         });
-
     } catch (error) {
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -198,11 +196,11 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              <UserSettings
+              {/* <UserSettings
                 email={this.state.email}
                 user_id={this.state.user_id}
                 favorite_food={this.state.favorite_food}
-              />
+              /> */}
               {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
@@ -243,25 +241,6 @@ export default class LoginController extends Component {
                         this.state.userInfo.user &&
                         this.state.userInfo.user.id}
                     </Text>
-                    <Text>{this.state.userInfo.idToken}</Text>
-                    <Button
-                      style={styles.button}
-                      title="Search"
-                      onPress={() =>
-                        this.props.navigation.navigate('SearchRestaurant', {
-                          token: this.state.userInfo.idToken,
-                        })
-                      }
-                    />
-                    <Button
-                      style={styles.button}
-                      title="Add Restaurant"
-                      onPress={() =>
-                        this.props.navigation.navigate('AddRestaurant', {
-                          token: this.state.userInfo.idToken
-                        })
-                      }
-                    />
                   </View>
                 </View>
               )}

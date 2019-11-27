@@ -8,8 +8,10 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {NavigationEvents} from 'react-navigation';
 import moment from 'moment';
 
 export default class Restaurant extends React.Component {
@@ -26,20 +28,20 @@ export default class Restaurant extends React.Component {
       images: [],
     };
   }
-  componentDidMount = () => {
-    fetch(
-      'http://10.0.0.3:5000/mobile/restaurant/' +
-        this.props.navigation.getParam('id', 'NO-ID'),
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
-          mode: 'no-cors',
-          cache: 'no-cache',
-        },
+
+  async PageLoadEvent() {
+    let token = await AsyncStorage.getItem('token');
+    let id = await AsyncStorage.getItem('id');
+    this.setState({id, token});
+    fetch('https://apt-line-picker.appspot.com/mobile/restaurant/' + id, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        token: token,
+        mode: 'no-cors',
+        cache: 'no-cache',
       },
-    )
+    })
       .then(response => response.json())
       .then(response => {
         console.log(response);
@@ -61,13 +63,17 @@ export default class Restaurant extends React.Component {
           waitTimes,
           images: response.images,
         });
+      })
+      .catch(error => {
+        console.log(error);
       });
-  };
+  }
 
   render() {
     const {navigate} = this.props.navigation;
     return (
       <View>
+        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.MenuIcon}
@@ -105,7 +111,11 @@ export default class Restaurant extends React.Component {
         </ScrollView>
         <Button
           title="Submit Wait Time"
-          onPress={() => navigate('WaitSubmission', {name: 'WaitSubmission'})}
+          onPress={() => {
+            AsyncStorage.setItem('id', this.state.id);
+            AsyncStorage.setItem('token', this.state.token);
+            this.props.navigation.navigate('WaitSubmission', {});
+          }}
         />
       </View>
     );

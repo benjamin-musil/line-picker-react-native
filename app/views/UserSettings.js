@@ -11,35 +11,36 @@ import {
   Picker,
   TouchableOpacity,
 } from 'react-native';
-import {Table, Row, Rows} from 'react-native-table-component';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Table, Row} from 'react-native-table-component';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-/*
-import RadioButton from '../components/RadioButton';
-import {gray} from 'ansi-colors';
-import moment from 'moment';
-
- */
+import {NavigationEvents} from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class UserSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      user_id: '',
-      favorite_food: '',
+      userId: '',
+      favoriteFood: '',
     };
+  }
+
+  async PageLoadEvent() {
+    let email = await AsyncStorage.getItem('email');
+    let userId = await AsyncStorage.getItem('userid');
+    let favoriteFood = await AsyncStorage.getItem('favoriteFood');
+    this.setState({email, userId, favoriteFood}, () => {
+      console.log(this.state.email);
+      console.log(this.state.userId);
+    });
   }
 
   render() {
     return (
       <View>
+        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
         <TouchableOpacity
           activeOpacity={0.5}
           style={{borderWidth: 0, borderColor: 'red', width: 40, height: 40}}
@@ -57,12 +58,12 @@ export default class UserSettings extends React.Component {
           />
           <Row
             data={[
-              this.props.email,
-              this.props.user_id,
-              this.props.favorite_food,
+              this.state.email,
+              this.state.userId,
+              this.state.favoriteFood,
             ]}
             textStyle={styles.text}
-            style={styles.row}
+            style={styles.head}
           />
         </Table>
       </View>
@@ -94,5 +95,6 @@ const styles = StyleSheet.create({
   },
   container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
   head: {height: 40, backgroundColor: '#f1f8ff'},
+  row: {flex: 1, flexDirection: 'row', height: 25, margin: 0},
   text: {margin: 6},
 });

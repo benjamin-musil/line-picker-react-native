@@ -7,11 +7,12 @@ import {
   Button,
   Image,
   TextInput,
-  ActivityIndicator,TouchableOpacity,
+  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import moment from 'moment';
 
 export default class Restaurant extends React.Component {
   constructor(props) {
@@ -22,15 +23,23 @@ export default class Restaurant extends React.Component {
       loading: false,
     };
   }
-  componentDidMount = () => {};
+
+  async PageLoadEvent() {
+    let token = await AsyncStorage.getItem('token');
+    this.setState({token});
+  }
+
+  componentDidMount = () => {
+    this.PageLoadEvent();
+  };
 
   handleChange = e => {
     this.setState({search: e});
   };
 
   handleSearch = () => {
-    console.log(this.state.search);
     this.setState({loading: true});
+
     fetch(
       'https://apt-line-picker.appspot.com/mobile/ListAllRestaurant/Search',
       {
@@ -38,7 +47,7 @@ export default class Restaurant extends React.Component {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+          token: this.state.token,
           mode: 'no-cors',
           cache: 'no-cache',
         },
@@ -50,6 +59,7 @@ export default class Restaurant extends React.Component {
       .then(response => response.json())
       .then(response => {
         let arr = [];
+        console.log(response);
         response.restaurants.forEach(restaurant => {
           let rest = [
             restaurant.name,
@@ -59,12 +69,11 @@ export default class Restaurant extends React.Component {
             <Button
               style={styles.button}
               title="GoTo"
-              onPress={() =>
-                this.props.navigation.navigate('Restaurant', {
-                  id: restaurant.id,
-                  token: this.props.navigation.getParam('token', 'NO-TOKEN'),
-                })
-              }
+              onPress={() => {
+                AsyncStorage.setItem('id', restaurant.id);
+                AsyncStorage.setItem('token', this.state.token);
+                this.props.navigation.navigate('Restaurant', {});
+              }}
             />,
           ];
           arr.push(rest);
@@ -79,12 +88,15 @@ export default class Restaurant extends React.Component {
   render() {
     return (
       <View>
-         <TouchableOpacity  activeOpacity={.5}  style={styles.MenuIcon}  onPress={
-                          this.props.navigation.toggleDrawer
-                    } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}            
-                 />
-                 </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.MenuIcon}
+          onPress={this.props.navigation.toggleDrawer}>
+          <Image
+            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+            style={styles.MenuIcon}
+          />
+        </TouchableOpacity>
         <Text style={styles.sectionTitle}>Search Restaurants</Text>
         <TextInput
           placeholder="chinese"
@@ -158,5 +170,5 @@ const styles = StyleSheet.create({
   head: {height: 40, backgroundColor: '#f1f8ff'},
   row: {height: 50},
   text: {margin: 6, color: 'black'},
-  MenuIcon: {width:40,height:40  },
+  MenuIcon: {width: 40, height: 40},
 });

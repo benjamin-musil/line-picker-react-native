@@ -6,11 +6,13 @@ import {
   Button,
   TextInput,
   Picker,
-  ActivityIndicator,Image,TouchableOpacity,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
-
+import {NavigationEvents} from 'react-navigation';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-
+import AsyncStorage from '@react-native-community/async-storage';
 export default class AddRestaurant extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,12 @@ export default class AddRestaurant extends React.Component {
       error: '',
     };
   }
+
+  async PageLoadEvent() {
+    let token = await AsyncStorage.getItem('token');
+    this.setState({token});
+  }
+
   componentDidMount = () => {
     fetch('https://apt-line-picker.appspot.com/mobile/get-all-categories')
       .then(response => response.json())
@@ -48,7 +56,7 @@ export default class AddRestaurant extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+        token: this.state.token,
         mode: 'no-cors',
         cache: 'no-cache',
       },
@@ -60,10 +68,9 @@ export default class AddRestaurant extends React.Component {
     })
       .then(response => response.json())
       .then(response => {
-        this.props.navigation.navigate('Restaurant', {
-          id: response.id,
-          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
-        });
+        AsyncStorage.setItem('id', response.id);
+        AsyncStorage.setItem('token', this.state.token);
+        this.props.navigation.navigate('Restaurant', {});
       })
       .catch(error => {
         this.setState({error, submitting: false});
@@ -73,12 +80,16 @@ export default class AddRestaurant extends React.Component {
   render() {
     return (
       <View>
-            <TouchableOpacity  activeOpacity={.5}  style={styles.MenuIcon}   onPress={
-                          this.props.navigation.toggleDrawer
-                    } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}               
-                 />
-                 </TouchableOpacity>
+        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={styles.MenuIcon}
+          onPress={this.props.navigation.toggleDrawer}>
+          <Image
+            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+            style={styles.MenuIcon}
+          />
+        </TouchableOpacity>
         {this.state.error ? (
           <Text style={styles.sectionTitle}>{this.state.error}</Text>
         ) : null}
@@ -147,5 +158,5 @@ const styles = StyleSheet.create({
   inputTitle: {
     fontSize: 18,
   },
-  MenuIcon: {width:40,height:40  },
+  MenuIcon: {width: 40, height: 40},
 });
