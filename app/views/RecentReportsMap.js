@@ -12,13 +12,15 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import {NavigationEvents} from 'react-navigation';
-import MapView from 'react-native-maps';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import {tsThisType} from '@babel/types';
 
 // Maps documentation
 // https://github.com/react-native-community/react-native-maps
+// Maps current location
+// https://codeburst.io/react-native-google-map-with-react-native-maps-572e3d3eee14
 
 export default class RecentReportsMap extends React.Component {
     // Title of view for navigation
@@ -29,12 +31,15 @@ export default class RecentReportsMap extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploadSource: null,
-            image64: null,
             geolocation: null,
-            wait: null,
             Id: null,
             submitting: false,
+            region: {
+                latitude: 6,
+                longitude: 6,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            }
         };
     }
 
@@ -45,51 +50,88 @@ export default class RecentReportsMap extends React.Component {
         this.setState({token, id});
     }
 
+    componentDidMount() {
+        Geolocation.getCurrentPosition(
+            position => {
+            this.setState({
+                region: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    latitudeDelta: 0.0462,
+                    longitudeDelta: 0.0261,
+                }
+            },
+            console.log(this.state.region));
+        },
+        (error) => console.log(error.message),
+            { enableHighAccuracy: true, timeout: 20000},
+    );
+    this.watchID = Geolocation.watchPosition(
+            position => {
+            this.setState({
+                region: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    latitudeDelta: 0.0462,
+                    longitudeDelta: 0.0261,
+                }
+            });
+        }
+    );
+    }  componentWillUnmount() {
+        Geolocation.clearWatch(this.watchID);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <MapView
-                    initialRegion={{
-                        latitude: 37.78825,
-                            longitude: -122.4324,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                    }}
-                />
+                    provider={ PROVIDER_GOOGLE }
+                    style={ styles.map }
+                    //customMapStyle={ RetroMapStyles }
+                    //showsUserLocation={ true }
+                    region={this.state.region}
+                    //onRegionChange={ region => this.setState({region}) }
+                    //onRegionChangeComplete={ region => this.setState({region}) }
+                >
+                    <MapView.Marker
+                        coordinate={ this.state.region }
+                    />
+                </MapView>
             </View>
         );
     }
 
-    submitInfo = () => {
-        this.setState({submitting: true});
-        fetch('https://apt-line-picker.appspot.com/mobile/submit-time', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            token: this.state.token,
-            mode: 'no-cors',
-            cache: 'no-cache',
-        },
-        body: JSON.stringify({
-        geolocation: this.state.geolocation,
-        Id: this.state.id,
-        wait: this.state.wait,
-        image64: this.state.image64,
-        }),
-        })
-        .then(response => response.json())
-        .then(response => {
-            console.log(response);
-        AsyncStorage.setItem('id', this.state.id);
-        AsyncStorage.setItem('token', this.state.token);
-        this.props.navigation.navigate('Restaurant', {});
-        })
-        .catch(error => {
-            console.log(error);
-        this.setState({error, submitting: false});
-        });
-    };
+    // submitInfo = () => {
+    //     this.setState({submitting: true});
+    //     fetch('https://apt-line-picker.appspot.com/mobile/submit-time', {
+    //     method: 'POST',
+    //     headers: {
+    //         Accept: 'application/json',
+    //         'Content-Type': 'application/json',
+    //         token: this.state.token,
+    //         mode: 'no-cors',
+    //         cache: 'no-cache',
+    //     },
+    //     body: JSON.stringify({
+    //     geolocation: this.state.geolocation,
+    //     Id: this.state.id,
+    //     wait: this.state.wait,
+    //     image64: this.state.image64,
+    //     }),
+    //     })
+    //     .then(response => response.json())
+    //     .then(response => {
+    //         console.log(response);
+    //     AsyncStorage.setItem('id', this.state.id);
+    //     AsyncStorage.setItem('token', this.state.token);
+    //     this.props.navigation.navigate('Restaurant', {});
+    //     })
+    //     .catch(error => {
+    //         console.log(error);
+    //     this.setState({error, submitting: false});
+    //     });
+    // };
 
     findCoordinates = () => {
         Geolocation.getCurrentPosition(
@@ -107,15 +149,13 @@ export default class RecentReportsMap extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        ...StyleSheet.absoluteFillObject,
+        height: 600,
+        width: 400,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
-    textInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-    },
-    scrollView: {
-        marginHorizontal: 20,
-        maxHeight: 250,
+    map: {
+        ...StyleSheet.absoluteFillObject,
     },
 });
