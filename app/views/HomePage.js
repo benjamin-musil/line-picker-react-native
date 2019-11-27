@@ -28,7 +28,6 @@ export default class HomePage extends Component {
                  </TouchableOpacity>
                      
                 <View style={styles.ButtonPadding}>
-         
                     <Button
                         title="Login"
                         onPress={() =>
@@ -65,10 +64,24 @@ export default class HomePage extends Component {
                         title="My Submissions"
                         onPress={() =>
                             this.props.navigation.navigate('MySubmission')
-
                         }
                     />
-                    
+                </View>
+                <View style={styles.ButtonPadding}>
+                    <Button
+                        title="My Submissions"
+                        onPress={() =>
+                            this.props.navigation.navigate('MySubmission')
+                        }
+                    />
+                </View>
+                <View style={styles.ButtonPadding}>
+                    <Button
+                        title="View Recent Reports"
+                        onPress={() =>
+                            this.props.navigation.navigate('RecentReportsMap')
+                        }
+                    />
                 </View>
             </View>
         );
