@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {NavigationEvents} from 'react-navigation';
@@ -50,29 +51,31 @@ export default class WaitSubmission extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          <Text>Input Wait Time in Minutes</Text>
-          <TextInput
-            style={styles.textInput}
-            keyboardType="number-pad"
-            onChangeText={waittime => (this.state.wait = waittime)}
-          />
-          <Button
-            title="Submit Wait Time Information"
-            disabled={
-              !this.state.image64 || !this.state.wait || this.state.submitting
-            }
-            onPress={this.submitInfo}
-          />
-          {this.state.submitting ? <ActivityIndicator /> : null}
-        </ScrollView>
-        <PhotoComponent uri={this.state.uploadSource} />
-        <ButtonComponent onPress={this.selectPhotoTapped.bind(this)} />
-      </View>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            <Text>Input Wait Time in Minutes</Text>
+            <TextInput
+              style={styles.textInput}
+              keyboardType="number-pad"
+              onChangeText={waittime => (this.state.wait = waittime)}
+            />
+            <Button
+              title="Submit Wait Time Information"
+              disabled={
+                !this.state.image64 || !this.state.wait || this.state.submitting
+              }
+              onPress={this.submitInfo}
+            />
+            {this.state.submitting ? <ActivityIndicator /> : null}
+          </ScrollView>
+          <PhotoComponent uri={this.state.uploadSource} />
+          <ButtonComponent onPress={this.selectPhotoTapped.bind(this)} />
+        </View>
+      </SafeAreaView>
     );
   }
 

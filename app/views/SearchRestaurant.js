@@ -9,6 +9,7 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
@@ -87,43 +88,45 @@ export default class Restaurant extends React.Component {
 
   render() {
     return (
-      <View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.MenuIcon}
-          onPress={this.props.navigation.toggleDrawer}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+      <SafeAreaView>
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.MenuIcon}
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image
+              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+              style={styles.MenuIcon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.sectionTitle}>Search Restaurants</Text>
+          <TextInput
+            placeholder="chinese"
+            onChangeText={this.handleChange}
+            value={this.state.search}
           />
-        </TouchableOpacity>
-        <Text style={styles.sectionTitle}>Search Restaurants</Text>
-        <TextInput
-          placeholder="chinese"
-          onChangeText={this.handleChange}
-          value={this.state.search}
-        />
-        <Button title="Search" onPress={this.handleSearch} />
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          {this.state.loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
-            <Table>
-              <Row
-                data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
-                style={styles.head}
-              />
-              <Rows
-                data={this.state.restaurants}
-                style={styles.row}
-                textStyle={styles.text}
-              />
-            </Table>
-          )}
-        </ScrollView>
-      </View>
+          <Button title="Search" onPress={this.handleSearch} />
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            {this.state.loading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <Table>
+                <Row
+                  data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
+                  style={styles.head}
+                />
+                <Rows
+                  data={this.state.restaurants}
+                  style={styles.row}
+                  textStyle={styles.text}
+                />
+              </Table>
+            )}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   }
 }

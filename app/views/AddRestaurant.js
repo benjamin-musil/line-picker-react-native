@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {NavigationEvents} from 'react-navigation';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -79,59 +80,61 @@ export default class AddRestaurant extends React.Component {
 
   render() {
     return (
-      <View>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.MenuIcon}
-          onPress={this.props.navigation.toggleDrawer}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+      <SafeAreaView>
+        <View>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.MenuIcon}
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image
+              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+              style={styles.MenuIcon}
+            />
+          </TouchableOpacity>
+          {this.state.error ? (
+            <Text style={styles.sectionTitle}>{this.state.error}</Text>
+          ) : null}
+          <Text style={styles.sectionTitle}>Add a Restaurant</Text>
+          <Text style={styles.inputTitle}>Name of the Restaurant</Text>
+          <TextInput
+            style={styles.textInput}
+            value={this.state.name}
+            onChangeText={this._handleNameChange}
+            placeholder="New Restaurant"
           />
-        </TouchableOpacity>
-        {this.state.error ? (
-          <Text style={styles.sectionTitle}>{this.state.error}</Text>
-        ) : null}
-        <Text style={styles.sectionTitle}>Add a Restaurant</Text>
-        <Text style={styles.inputTitle}>Name of the Restaurant</Text>
-        <TextInput
-          style={styles.textInput}
-          value={this.state.name}
-          onChangeText={this._handleNameChange}
-          placeholder="New Restaurant"
-        />
-        <Text style={styles.inputTitle}>Address of the Restaurant</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Restaurant Address"
-          value={this.state.address}
-          onChangeText={this._handleAddressChange}
-        />
-        <Text style={styles.pickerTitle}>Type of Restaurant</Text>
-        <Picker
-          selectedValue={this.state.selected}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({selected: itemValue})
-          }>
-          <Picker.Item label={'select one'} value={'select one'} />
-          {this.state.categories.map(category => {
-            return <Picker.Item label={category} value={category} />;
-          })}
-        </Picker>
-        <Button
-          title="Submit"
-          color="#4CAF50"
-          disabled={
-            this.state.name === '' ||
-            this.state.address === '' ||
-            this.state.selected === 'select one' ||
-            this.state.submitting
-          }
-          onPress={this._handleSubmit}
-        />
-        {this.state.submitting ? <ActivityIndicator /> : null}
-      </View>
+          <Text style={styles.inputTitle}>Address of the Restaurant</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Restaurant Address"
+            value={this.state.address}
+            onChangeText={this._handleAddressChange}
+          />
+          <Text style={styles.pickerTitle}>Type of Restaurant</Text>
+          <Picker
+            selectedValue={this.state.selected}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({selected: itemValue})
+            }>
+            <Picker.Item label={'select one'} value={'select one'} />
+            {this.state.categories.map(category => {
+              return <Picker.Item label={category} value={category} />;
+            })}
+          </Picker>
+          <Button
+            title="Submit"
+            color="#4CAF50"
+            disabled={
+              this.state.name === '' ||
+              this.state.address === '' ||
+              this.state.selected === 'select one' ||
+              this.state.submitting
+            }
+            onPress={this._handleSubmit}
+          />
+          {this.state.submitting ? <ActivityIndicator /> : null}
+        </View>
+      </SafeAreaView>
     );
   }
 }

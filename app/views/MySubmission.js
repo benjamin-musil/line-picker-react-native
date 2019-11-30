@@ -9,6 +9,7 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
@@ -74,56 +75,59 @@ export default class MySubmission extends Component {
 
   render() {
     return (
-      <View>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.MenuIcon}
-          onPress={this.props.navigation.toggleDrawer}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+      <SafeAreaView>
+        <View>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.MenuIcon}
-          />
-        </TouchableOpacity>
-        <View style={{borderColor: 'light grey', borderWidth: 0, fontSize: 1}}>
-          <ScrollView
-            style={styles.scrollView}
-            contentInsetAdjustmentBehavior="automatic">
-            <Table style={{borderWidth: 0}}>
-              <Row
-                data={['Wait Time(Min)', 'Date', 'Restaurant']}
-                style={styles.head}
-                textStyle={styles.text}
-              />
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image
+              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+              style={styles.MenuIcon}
+            />
+          </TouchableOpacity>
+          <View
+            style={{borderColor: 'light grey', borderWidth: 0, fontSize: 1}}>
+            <ScrollView
+              style={styles.scrollView}
+              contentInsetAdjustmentBehavior="automatic">
+              <Table style={{borderWidth: 0}}>
+                <Row
+                  data={['Wait Time(Min)', 'Date', 'Restaurant']}
+                  style={styles.head}
+                  textStyle={styles.text}
+                />
 
-              <Rows
-                data={this.state.WaitTimes}
-                style={styles.row}
-                textStyle={styles.text}
-              />
-            </Table>
-          </ScrollView>
-        </View>
+                <Rows
+                  data={this.state.WaitTimes}
+                  style={styles.row}
+                  textStyle={styles.text}
+                />
+              </Table>
+            </ScrollView>
+          </View>
 
-        <View style={{borderColor: 'light grey', borderWidth: 0}}>
-          <ScrollView
-            style={styles.scrollView}
-            contentInsetAdjustmentBehavior="automatic">
-            <Table>
-              <Row
-                data={['Restaurant', 'Image']}
-                style={styles.head}
-                textStyle={styles.text}
-              />
-              <Rows
-                data={this.state.imageSubmissions}
-                style={styles.row}
-                textStyle={styles.text}
-              />
-            </Table>
-          </ScrollView>
+          <View style={{borderColor: 'light grey', borderWidth: 0}}>
+            <ScrollView
+              style={styles.scrollView}
+              contentInsetAdjustmentBehavior="automatic">
+              <Table>
+                <Row
+                  data={['Restaurant', 'Image']}
+                  style={styles.head}
+                  textStyle={styles.text}
+                />
+                <Rows
+                  data={this.state.imageSubmissions}
+                  style={styles.row}
+                  textStyle={styles.text}
+                />
+              </Table>
+            </ScrollView>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

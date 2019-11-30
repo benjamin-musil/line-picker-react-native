@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
@@ -72,52 +73,54 @@ export default class Restaurant extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <View>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.MenuIcon}
-          onPress={this.props.navigation.toggleDrawer}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+      <SafeAreaView>
+        <View>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.MenuIcon}
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image
+              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+              style={styles.MenuIcon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.sectionTitle}>{this.state.name}</Text>
+          <Text>{this.state.address}</Text>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.center}
+            contentInsetAdjustmentBehavior="automatic">
+            {this.state.images.map(image => {
+              return <Image style={styles.image} source={{uri: image}} />;
+            })}
+          </ScrollView>
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            <Table style={styles.container}>
+              <Row
+                data={['Time', 'Date Submitted', 'Submitted by']}
+                style={styles.head}
+                textStyle={styles.text}
+              />
+              <Rows
+                data={this.state.waitTimes}
+                style={styles.row}
+                textStyle={styles.text}
+              />
+            </Table>
+          </ScrollView>
+          <Button
+            title="Submit Wait Time"
+            onPress={() => {
+              AsyncStorage.setItem('id', this.state.id);
+              AsyncStorage.setItem('token', this.state.token);
+              this.props.navigation.navigate('WaitSubmission', {});
+            }}
           />
-        </TouchableOpacity>
-        <Text style={styles.sectionTitle}>{this.state.name}</Text>
-        <Text>{this.state.address}</Text>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.center}
-          contentInsetAdjustmentBehavior="automatic">
-          {this.state.images.map(image => {
-            return <Image style={styles.image} source={{uri: image}} />;
-          })}
-        </ScrollView>
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          <Table style={styles.container}>
-            <Row
-              data={['Time', 'Date Submitted', 'Submitted by']}
-              style={styles.head}
-              textStyle={styles.text}
-            />
-            <Rows
-              data={this.state.waitTimes}
-              style={styles.row}
-              textStyle={styles.text}
-            />
-          </Table>
-        </ScrollView>
-        <Button
-          title="Submit Wait Time"
-          onPress={() => {
-            AsyncStorage.setItem('id', this.state.id);
-            AsyncStorage.setItem('token', this.state.token);
-            this.props.navigation.navigate('WaitSubmission', {});
-          }}
-        />
-      </View>
+        </View>
+      </SafeAreaView>
     );
   }
 }

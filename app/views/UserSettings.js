@@ -39,34 +39,36 @@ export default class UserSettings extends React.Component {
 
   render() {
     return (
-      <View>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={{borderWidth: 0, borderColor: 'red', width: 40, height: 40}}
-          onPress={() => this.props.navigation.toggleDrawer()}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
-            style={{width: 40, height: 40}}
-          />
-        </TouchableOpacity>
-        <Table style={styles.container}>
-          <Row
-            data={['Email', 'User ID', 'Favorite Food']}
-            style={styles.head}
-            textStyle={styles.text}
-          />
-          <Row
-            data={[
-              this.state.email,
-              this.state.userId,
-              this.state.favoriteFood,
-            ]}
-            textStyle={styles.text}
-            style={styles.head}
-          />
-        </Table>
-      </View>
+      <SafeAreaView>
+        <View>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{borderWidth: 0, borderColor: 'red', width: 40, height: 40}}
+            onPress={() => this.props.navigation.toggleDrawer()}>
+            <Image
+              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+              style={{width: 40, height: 40}}
+            />
+          </TouchableOpacity>
+          <Table style={styles.container}>
+            <Row
+              data={['Email', 'User ID', 'Favorite Food']}
+              style={styles.head}
+              textStyle={styles.text}
+            />
+            <Row
+              data={[
+                this.state.email,
+                this.state.userId,
+                this.state.favoriteFood,
+              ]}
+              textStyle={styles.text}
+              style={styles.head}
+            />
+          </Table>
+        </View>
+      </SafeAreaView>
     );
   }
 }
