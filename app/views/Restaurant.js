@@ -14,14 +14,14 @@ import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationEvents} from 'react-navigation';
 import moment from 'moment';
+import menuIcon from '../StaticContent/IMG/MenuIconIMG.jpeg';
 
 export default class Restaurant extends React.Component {
-  static navigationOptions = {
-    title: 'Restaurant',
-  };
-
   constructor(props) {
     super(props);
+    this.subs = [
+      this.props.navigation.addListener('willBlur', this.componentWillUnmount),
+    ];
     this.state = {
       name: '',
       address: '',
@@ -45,7 +45,6 @@ export default class Restaurant extends React.Component {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         let waitTimes = [];
         if (response.wait_times) {
           response.wait_times.forEach(element => {
@@ -70,8 +69,13 @@ export default class Restaurant extends React.Component {
       });
   }
 
+  componentWillUnmount = () => {
+    AsyncStorage.removeItem('id');
+    this.subs.forEach(sub => sub.remove());
+    this.setState({name: '', address: '', waitTimes: [], images: []});
+  };
+
   render() {
-    const {navigate} = this.props.navigation;
     return (
       <SafeAreaView>
         <View>
@@ -80,10 +84,7 @@ export default class Restaurant extends React.Component {
             activeOpacity={0.5}
             style={styles.MenuIcon}
             onPress={this.props.navigation.toggleDrawer}>
-            <Image
-              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
-              style={styles.MenuIcon}
-            />
+            <Image source={menuIcon} style={styles.MenuIcon} />
           </TouchableOpacity>
           <Text style={styles.sectionTitle}>{this.state.name}</Text>
           <Text>{this.state.address}</Text>
@@ -137,24 +138,12 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   image: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
   },
   center: {justifyContent: 'center', alignItems: 'center'},
   textInput: {
     height: 40,
-  },
-  pickerTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 0,
-    paddingTop: 'auto',
-    color: Colors.black,
-    marginBottom: 0,
-  },
-  inputTitle: {
-    fontSize: 18,
   },
   scrollView: {
     marginHorizontal: 20,

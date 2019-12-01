@@ -1,26 +1,15 @@
 import React, {Component} from 'react';
 import {
-  Text,
-  TextInput,
   View,
   Button,
   StyleSheet,
-  AsyncStorage,
   Image,
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {NavigationEvents} from 'react-navigation';
+import menuIcon from '../StaticContent/IMG/MenuIconIMG.jpeg';
 
 export default class HomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      CheckTest: '',
-    };
-  }
-
   static navigationOptions = {
     drawerLabel: 'Home',
   };
@@ -32,10 +21,7 @@ export default class HomePage extends Component {
             activeOpacity={0.5}
             style={styles.MenuIcon}
             onPress={this.props.navigation.toggleDrawer}>
-            <Image
-              source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
-              style={styles.MenuIcon}
-            />
+            <Image source={menuIcon} style={styles.MenuIcon} />
           </TouchableOpacity>
 
           <View style={styles.ButtonPadding}>
@@ -81,9 +67,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     margin: 20,
     backgroundColor: 'red',
-  },
-  red: {
-    color: 'red',
   },
   MenuIcon: {width: 40, height: 40},
 });

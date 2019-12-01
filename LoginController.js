@@ -8,25 +8,15 @@ import {
   StatusBar,
   Button,
   Image,
-  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
-import Restaurant from './app/views/Restaurant';
-import UserSettings from './app/views/UserSettings';
-import HomePage from './app/views/HomePage';
 export default class LoginController extends Component {
   constructor(props) {
     super(props);
@@ -66,9 +56,7 @@ export default class LoginController extends Component {
         userInfo.accessToken,
       );
       // login with credential
-      const firebaseUserCredential = await firebase
-        .auth()
-        .signInWithCredential(credential);
+      await firebase.auth().signInWithCredential(credential);
       this.setState({userInfo});
       fetch('https://apt-line-picker.appspot.com/mobile/user-settings', {
         method: 'GET',
@@ -158,7 +146,6 @@ export default class LoginController extends Component {
       await GoogleSignin.signOut();
       this.setState({user: null, loggedIn: false}); // Remember to remove the user from your app's state as well
     } catch (error) {
-      alert('error');
       console.error(error);
     }
   };
@@ -171,7 +158,6 @@ export default class LoginController extends Component {
           <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={styles.scrollView}>
-            <Header />
             {global.HermesInternal == null ? null : (
               <View style={styles.engine}>
                 <Text style={styles.footer}>Engine: Hermes</Text>
@@ -199,12 +185,6 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              {/* <UserSettings
-                email={this.state.email}
-                user_id={this.state.user_id}
-                favorite_food={this.state.favorite_food}
-              /> */}
-              {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
                   <View style={styles.listHeader}>

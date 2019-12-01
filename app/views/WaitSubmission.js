@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -6,9 +6,7 @@ import {
   Text,
   TextInput,
   Button,
-  Image,
   Alert,
-  TouchableOpacity,
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
@@ -18,7 +16,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import PhotoComponent from '../components/PhotoComponent';
 import ButtonComponent from '../components/ButtonComponent';
-import {tsThisType} from '@babel/types';
 
 // Geolocation tutorial:
 // https://github.com/react-native-community/react-native-geolocation
@@ -26,7 +23,6 @@ import {tsThisType} from '@babel/types';
 // https://www.uniquesoftwaredev.com/using-the-camera-in-react-native/
 
 export default class WaitSubmission extends React.Component {
-  // Title of view for navigation
   static navigationOptions = {
     title: 'WaitSubmission',
   };
