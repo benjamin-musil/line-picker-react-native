@@ -12,7 +12,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import {NavigationEvents} from 'react-navigation';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView,  {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import {tsThisType} from '@babel/types';
@@ -39,7 +39,25 @@ export default class RecentReportsMap extends React.Component {
                 longitude: 6,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
-            }
+            },
+            markers: [{
+                coordinate: {
+                    latitude: 30.3678535,
+                    longitude: -97.6226369,
+                },
+                title: 'Subway',
+                description: 'Subway by my house, wait time 5 min',
+                id: 1
+            },
+            {
+                coordinate: {
+                    latitude: 30.3365523,
+                    longitude: -97.6540377,
+                },
+                title: 'Dragonbeard Kitchen',
+                description: 'Okay food, 30 min wait',
+                id: 2
+            }]
         };
     }
 
@@ -57,8 +75,8 @@ export default class RecentReportsMap extends React.Component {
                 region: {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
-                    latitudeDelta: 0.0462,
-                    longitudeDelta: 0.0261,
+                    latitudeDelta: 0.06,
+                    longitudeDelta: 0.07,
                 }
             },
             console.log(this.state.region));
@@ -88,15 +106,24 @@ export default class RecentReportsMap extends React.Component {
                 <MapView
                     provider={ PROVIDER_GOOGLE }
                     style={ styles.map }
-                    //customMapStyle={ RetroMapStyles }
                     //showsUserLocation={ true }
                     region={this.state.region}
                     //onRegionChange={ region => this.setState({region}) }
                     //onRegionChangeComplete={ region => this.setState({region}) }
                 >
+                    {this.state.markers.map((marker: any) => (
+                                <Marker
+                            key={marker.id}
+                            coordinate={marker.coordinate}
+                            title={marker.title}
+                            description={marker.description}
+                        />
+                    ))}
                     <MapView.Marker
                         coordinate={ this.state.region }
+                        title={'Your location'}
                     />
+
                 </MapView>
             </View>
         );
