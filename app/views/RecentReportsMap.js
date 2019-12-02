@@ -40,24 +40,7 @@ export default class RecentReportsMap extends React.Component {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             },
-            markers: [{
-                coordinate: {
-                    latitude: 30.3678535,
-                    longitude: -97.6226369,
-                },
-                title: 'Subway',
-                description: 'Subway by my house, wait time 5 min',
-                id: 1
-            },
-            {
-                coordinate: {
-                    latitude: 30.3365523,
-                    longitude: -97.6540377,
-                },
-                title: 'Dragonbeard Kitchen',
-                description: 'Okay food, 30 min wait',
-                id: 2
-            }]
+            markers: []
         };
     }
 
@@ -118,27 +101,34 @@ export default class RecentReportsMap extends React.Component {
         })
             .then(response => response.json())
             .then(response => {
-                console.log(this.state.region.latitude);
-                console.log(response);
                 let reports = [];
-                if (response.wait_times) {
-                    response.wait_times.forEach(element => {
-                        waitTimes.push([
-                            element[0],
-                            moment(element[1]).format('M-DD-YYYY HH:MM'),
-                            element[2],
-                        ]);
-                    });
-                } else {
-                    reports.push([['None'], [''], ['']]);
-                }
+                let iterator = 1;
+                response.forEach(element => {
+                    var latlng = element.geolocation;
+                    reports.push([{
+                        'coordinate': this.latlngToCoordinate(latlng),
+                        'title': element.name,
+                        'description': element.wait_times + " minute wait time",
+                        'id': iterator,
+                    },
+                    iterator++
+                    ]);
+                });
                 this.setState({
                     markers: reports,
                 });
+                console.log(this.state.markers);
             })
             .catch(error => {
                 console.log(error);
             });
+    }
+
+    latlngToCoordinate = (latlng) => {
+        var pattern = new RegExp('[.\\d-]+', 'g');
+        var matches = latlng.match(pattern);
+        var coordinates = {'latitude': Number(matches[0]), 'longitude': Number(matches[1])};
+        return coordinates;
     }
 
     render() {
@@ -162,40 +152,8 @@ export default class RecentReportsMap extends React.Component {
                 </MapView>
             </View>
         );
+
     }
-
-
-
-    // submitInfo = () => {
-    //     this.setState({submitting: true});
-    //     fetch('https://apt-line-picker.appspot.com/mobile/submit-time', {
-    //     method: 'POST',
-    //     headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json',
-    //         token: this.state.token,
-    //         mode: 'no-cors',
-    //         cache: 'no-cache',
-    //     },
-    //     body: JSON.stringify({
-    //     geolocation: this.state.geolocation,
-    //     Id: this.state.id,
-    //     wait: this.state.wait,
-    //     image64: this.state.image64,
-    //     }),
-    //     })
-    //     .then(response => response.json())
-    //     .then(response => {
-    //         console.log(response);
-    //     AsyncStorage.setItem('id', this.state.id);
-    //     AsyncStorage.setItem('token', this.state.token);
-    //     this.props.navigation.navigate('Restaurant', {});
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     this.setState({error, submitting: false});
-    //     });
-    // };
 }
 
 const styles = StyleSheet.create({
