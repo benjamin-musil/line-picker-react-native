@@ -7,30 +7,50 @@ import {
   Button,
   Image,
   TextInput,
-  ActivityIndicator,TouchableOpacity,
+  ActivityIndicator,
+  TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import moment from 'moment';
+import menuIcon from '../StaticContent/IMG/MenuIconIMG.jpeg';
 
 export default class Restaurant extends React.Component {
   constructor(props) {
     super(props);
+    this.subs = [
+      this.props.navigation.addListener('didFocus', this.componentDidMount),
+      this.props.navigation.addListener('willBlur', this.componentWillUnmount),
+    ];
     this.state = {
       search: '',
       restaurants: [],
       loading: false,
     };
   }
-  componentDidMount = () => {};
+
+  async PageLoadEvent() {
+    let token = await AsyncStorage.getItem('token');
+    this.setState({token});
+  }
+
+  componentDidMount = () => {
+    this.PageLoadEvent();
+  };
+
+  componentWillUnmount = () => {
+    this.subs.forEach(sub => sub.remove());
+    this.setState({search: '', restaurants: [], loading: false});
+  };
 
   handleChange = e => {
     this.setState({search: e});
   };
 
   handleSearch = () => {
-    console.log(this.state.search);
     this.setState({loading: true});
+
     fetch(
       'https://apt-line-picker.appspot.com/mobile/ListAllRestaurant/Search',
       {
@@ -38,7 +58,7 @@ export default class Restaurant extends React.Component {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          token: this.props.navigation.getParam('token', 'NO-TOKEN'),
+          token: this.state.token,
           mode: 'no-cors',
           cache: 'no-cache',
         },
@@ -59,12 +79,11 @@ export default class Restaurant extends React.Component {
             <Button
               style={styles.button}
               title="GoTo"
-              onPress={() =>
-                this.props.navigation.navigate('Restaurant', {
-                  id: restaurant.id,
-                  token: this.props.navigation.getParam('token', 'NO-TOKEN'),
-                })
-              }
+              onPress={() => {
+                AsyncStorage.setItem('id', restaurant.id);
+                AsyncStorage.setItem('token', this.state.token);
+                this.props.navigation.navigate('Restaurant', {});
+              }}
             />,
           ];
           arr.push(rest);
@@ -78,40 +97,42 @@ export default class Restaurant extends React.Component {
 
   render() {
     return (
-      <View>
-         <TouchableOpacity  activeOpacity={.5}  style={styles.MenuIcon}  onPress={
-                          this.props.navigation.toggleDrawer
-                    } >
-                  <Image  source={require('../StaticContent/IMG/MenuIconIMG.jpeg')} style={styles.MenuIcon}            
-                 />
-                 </TouchableOpacity>
-        <Text style={styles.sectionTitle}>Search Restaurants</Text>
-        <TextInput
-          placeholder="chinese"
-          onChangeText={this.handleChange}
-          value={this.state.search}
-        />
-        <Button title="Search" onPress={this.handleSearch} />
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          {this.state.loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
-            <Table>
-              <Row
-                data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
-                style={styles.head}
-              />
-              <Rows
-                data={this.state.restaurants}
-                style={styles.row}
-                textStyle={styles.text}
-              />
-            </Table>
-          )}
-        </ScrollView>
-      </View>
+      <SafeAreaView>
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.MenuIcon}
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image source={menuIcon} style={styles.MenuIcon} />
+          </TouchableOpacity>
+          <Text style={styles.sectionTitle}>Search Restaurants</Text>
+          <TextInput
+            placeholder="chinese"
+            onChangeText={this.handleChange}
+            value={this.state.search}
+          />
+          <Button title="Search" onPress={this.handleSearch} />
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            {this.state.loading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <Table>
+                <Row
+                  data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
+                  style={styles.head}
+                />
+                <Rows
+                  data={this.state.restaurants}
+                  style={styles.row}
+                  textStyle={styles.text}
+                />
+              </Table>
+            )}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -128,35 +149,15 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   image: {
-    height: 100,
-    width: 50,
-  },
-  center: {justifyContent: 'center', alignItems: 'center'},
-  textInput: {
-    height: 40,
-  },
-  pickerTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 0,
-    paddingTop: 'auto',
-    color: Colors.black,
-    marginBottom: 0,
-  },
-  inputTitle: {
-    fontSize: 18,
+    height: 80,
+    width: 40,
   },
   scrollView: {
     marginHorizontal: 20,
     maxHeight: 250,
   },
-  button: {
-    width: 15,
-  },
-  container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
   head: {height: 40, backgroundColor: '#f1f8ff'},
   row: {height: 50},
   text: {margin: 6, color: 'black'},
-  MenuIcon: {width:40,height:40  },
+  MenuIcon: {width: 40, height: 40},
 });

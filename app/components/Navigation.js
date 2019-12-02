@@ -1,20 +1,23 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
 import Restaurant from '../views/Restaurant';
+import WaitSubmission from '../views/WaitSubmission';
 import SearchRestaurant from '../views/SearchRestaurant';
 import AddRestaurant from '../views/AddRestaurant';
 import Login from '../../LoginController';
 import HomePage from '../views/HomePage';
 import UserSettings from '../views/UserSettings';
-import MySubmission from '../views/MySubmission'
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import MySubmission from '../views/MySubmission';
+import {createDrawerNavigator} from 'react-navigation-drawer';
 
 const AppNavigator = createDrawerNavigator(
   {
     Restaurant: {
       screen: Restaurant,
+    },
+    WaitSubmission: {
+      screen: WaitSubmission,
     },
     SearchRestaurant: {
       screen: SearchRestaurant,
