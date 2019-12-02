@@ -64,7 +64,6 @@ export default class RecentReportsMap extends React.Component {
     async PageLoadEvent() {
         let token = await AsyncStorage.getItem('token');
         let id = await AsyncStorage.getItem('id');
-        this.findCoordinates();
         this.setState({token, id});
     }
 
@@ -78,38 +77,79 @@ export default class RecentReportsMap extends React.Component {
                     latitudeDelta: 0.06,
                     longitudeDelta: 0.07,
                 }
-            },
-            console.log(this.state.region));
+            });
         },
         (error) => console.log(error.message),
             { enableHighAccuracy: true, timeout: 20000},
-    );
-    this.watchID = Geolocation.watchPosition(
-            position => {
-            this.setState({
-                region: {
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude,
-                    latitudeDelta: 0.0462,
-                    longitudeDelta: 0.0261,
-                }
-            });
-        }
-    );
+        );
+        this.watchID = Geolocation.watchPosition(
+                position => {
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: 0.0462,
+                        longitudeDelta: 0.0261,
+                    }
+                });
+            }
+        );
+        this.getData();
     }  componentWillUnmount() {
         Geolocation.clearWatch(this.watchID);
+    }
+
+    getData = () => {
+        token = this.state.token;
+        id = this.state.id;
+        fetch('https://apt-line-picker.appspot.com/mobile/recent-reports', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                token: token,
+                mode: 'no-cors',
+                cache: 'no-cache',
+            },
+            body: JSON.stringify({
+                lat1: this.state.region.latitude,
+                long1: this.state.region.longitude,
+            }),
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(this.state.region.latitude);
+                console.log(response);
+                let reports = [];
+                if (response.wait_times) {
+                    response.wait_times.forEach(element => {
+                        waitTimes.push([
+                            element[0],
+                            moment(element[1]).format('M-DD-YYYY HH:MM'),
+                            element[2],
+                        ]);
+                    });
+                } else {
+                    reports.push([['None'], [''], ['']]);
+                }
+                this.setState({
+                    markers: reports,
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
                 <MapView
                     provider={ PROVIDER_GOOGLE }
                     style={ styles.map }
-                    //showsUserLocation={ true }
+                    showsUserLocation={ true }
                     region={this.state.region}
-                    //onRegionChange={ region => this.setState({region}) }
-                    //onRegionChangeComplete={ region => this.setState({region}) }
                 >
                     {this.state.markers.map((marker: any) => (
                                 <Marker
@@ -119,15 +159,12 @@ export default class RecentReportsMap extends React.Component {
                             description={marker.description}
                         />
                     ))}
-                    <MapView.Marker
-                        coordinate={ this.state.region }
-                        title={'Your location'}
-                    />
-
                 </MapView>
             </View>
         );
     }
+
+
 
     // submitInfo = () => {
     //     this.setState({submitting: true});
@@ -159,19 +196,6 @@ export default class RecentReportsMap extends React.Component {
     //     this.setState({error, submitting: false});
     //     });
     // };
-
-    findCoordinates = () => {
-        Geolocation.getCurrentPosition(
-            position => {
-            const geolocation =
-                position.coords.latitude + ',' + position.coords.longitude;
-            this.setState({geolocation});
-        },
-            error => Alert.alert(error.message),
-                {enableHighAccuracy: true, timeout: 20000}, // maximumAge: 1000, might need for iOS
-        );
-    };
-
 }
 
 const styles = StyleSheet.create({

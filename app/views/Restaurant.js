@@ -35,6 +35,7 @@ export default class Restaurant extends React.Component {
     this.setState({id, token});
     fetch('https://apt-line-picker.appspot.com/mobile/restaurant/' + id, {
       headers: {
+        method: 'GET',
         Accept: 'application/json',
         'Content-Type': 'application/json',
         token: token,
