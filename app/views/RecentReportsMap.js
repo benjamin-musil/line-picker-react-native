@@ -105,19 +105,17 @@ export default class RecentReportsMap extends React.Component {
                 let iterator = 1;
                 response.forEach(element => {
                     var latlng = element.geolocation;
-                    reports.push([{
+                    reports.push({
                         'coordinate': this.latlngToCoordinate(latlng),
                         'title': element.name,
                         'description': element.wait_times + " minute wait time",
                         'id': iterator,
-                    },
+                    });
                     iterator++
-                    ]);
                 });
                 this.setState({
                     markers: reports,
                 });
-                console.log(this.state.markers);
             })
             .catch(error => {
                 console.log(error);
@@ -141,7 +139,7 @@ export default class RecentReportsMap extends React.Component {
                     showsUserLocation={ true }
                     region={this.state.region}
                 >
-                    {this.state.markers.map((marker: any) => (
+                    {this.state.markers && this.state.markers.map (marker => (
                                 <Marker
                             key={marker.id}
                             coordinate={marker.coordinate}
