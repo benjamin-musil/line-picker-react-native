@@ -42,7 +42,14 @@ public class MainApplication extends Application implements ReactApplication {
           return "index";
         }
       };
- 
+
+//    @Override
+//    protected List<ReactPackage> getPackages() {
+//        return Arrays.<ReactPackage>asList(
+//                new MainReactPackage(),
+//                new MapsPackage()
+//        );
+//    }
 
   @Override
   public ReactNativeHost getReactNativeHost() {

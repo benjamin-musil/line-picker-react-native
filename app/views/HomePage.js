@@ -54,6 +54,12 @@ export default class HomePage extends Component {
               onPress={() => this.props.navigation.navigate('MySubmission')}
             />
           </View>
+          <View style={styles.ButtonPadding}>
+            <Button
+              title="View Recent Reports"
+              onPress={() => this.props.navigation.navigate('RecentReportsMap')}
+            />
+          </View>
         </View>
       </SafeAreaView>
     );
