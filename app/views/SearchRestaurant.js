@@ -9,14 +9,20 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Table, Row, Rows} from 'react-native-table-component';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import menuIcon from '../StaticContent/IMG/MenuIconIMG.jpeg';
 
 export default class Restaurant extends React.Component {
   constructor(props) {
     super(props);
+    this.subs = [
+      this.props.navigation.addListener('didFocus', this.componentDidMount),
+      this.props.navigation.addListener('willBlur', this.componentWillUnmount),
+    ];
     this.state = {
       search: '',
       restaurants: [],
@@ -31,6 +37,11 @@ export default class Restaurant extends React.Component {
 
   componentDidMount = () => {
     this.PageLoadEvent();
+  };
+
+  componentWillUnmount = () => {
+    this.subs.forEach(sub => sub.remove());
+    this.setState({search: '', restaurants: [], loading: false});
   };
 
   handleChange = e => {
@@ -59,7 +70,6 @@ export default class Restaurant extends React.Component {
       .then(response => response.json())
       .then(response => {
         let arr = [];
-        console.log(response);
         response.restaurants.forEach(restaurant => {
           let rest = [
             restaurant.name,
@@ -87,43 +97,42 @@ export default class Restaurant extends React.Component {
 
   render() {
     return (
-      <View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.MenuIcon}
-          onPress={this.props.navigation.toggleDrawer}>
-          <Image
-            source={require('../StaticContent/IMG/MenuIconIMG.jpeg')}
+      <SafeAreaView>
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.5}
             style={styles.MenuIcon}
+            onPress={this.props.navigation.toggleDrawer}>
+            <Image source={menuIcon} style={styles.MenuIcon} />
+          </TouchableOpacity>
+          <Text style={styles.sectionTitle}>Search Restaurants</Text>
+          <TextInput
+            placeholder="chinese"
+            onChangeText={this.handleChange}
+            value={this.state.search}
           />
-        </TouchableOpacity>
-        <Text style={styles.sectionTitle}>Search Restaurants</Text>
-        <TextInput
-          placeholder="chinese"
-          onChangeText={this.handleChange}
-          value={this.state.search}
-        />
-        <Button title="Search" onPress={this.handleSearch} />
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          {this.state.loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
-            <Table>
-              <Row
-                data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
-                style={styles.head}
-              />
-              <Rows
-                data={this.state.restaurants}
-                style={styles.row}
-                textStyle={styles.text}
-              />
-            </Table>
-          )}
-        </ScrollView>
-      </View>
+          <Button title="Search" onPress={this.handleSearch} />
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            {this.state.loading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <Table>
+                <Row
+                  data={['Name', 'Location', 'Time', 'Image', 'GoTo']}
+                  style={styles.head}
+                />
+                <Rows
+                  data={this.state.restaurants}
+                  style={styles.row}
+                  textStyle={styles.text}
+                />
+              </Table>
+            )}
+          </ScrollView>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -140,33 +149,13 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   image: {
-    height: 100,
-    width: 50,
-  },
-  center: {justifyContent: 'center', alignItems: 'center'},
-  textInput: {
-    height: 40,
-  },
-  pickerTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 0,
-    paddingTop: 'auto',
-    color: Colors.black,
-    marginBottom: 0,
-  },
-  inputTitle: {
-    fontSize: 18,
+    height: 80,
+    width: 40,
   },
   scrollView: {
     marginHorizontal: 20,
     maxHeight: 250,
   },
-  button: {
-    width: 15,
-  },
-  container: {flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff'},
   head: {height: 40, backgroundColor: '#f1f8ff'},
   row: {height: 50},
   text: {margin: 6, color: 'black'},

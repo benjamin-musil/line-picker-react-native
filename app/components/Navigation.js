@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
 import Restaurant from '../views/Restaurant';
 import WaitSubmission from '../views/WaitSubmission';
 import SearchRestaurant from '../views/SearchRestaurant';
@@ -13,7 +12,7 @@ import MySubmission from '../views/MySubmission';
 import RecentReportsMap from '../views/RecentReportsMap';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 
-const AppNavigator = createStackNavigator(
+const AppNavigator = createDrawerNavigator(
   {
     Restaurant: {
       screen: Restaurant,

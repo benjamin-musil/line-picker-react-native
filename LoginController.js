@@ -10,22 +10,13 @@ import {
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
-import Restaurant from './app/views/Restaurant';
-import UserSettings from './app/views/UserSettings';
-import HomePage from './app/views/HomePage';
 export default class LoginController extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +31,7 @@ export default class LoginController extends Component {
   componentDidMount() {
     GoogleSignin.configure({
       // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+
       webClientId:
         '414582689858-4nf9h85b8flr8utia3dhsstm6ke89ajo.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
@@ -47,7 +39,8 @@ export default class LoginController extends Component {
       loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
       forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login.
       accountName: '', // [Android] specifies an account name on the device that should be used
-      // iosClientId: '124018728460-krv1hjdv0mp51pisuc1104q5nfd440ae.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+      iosClientId:
+        '414582689858-1ja1qop430e629p29edk4hqt62cdm356.apps.googleusercontent.com', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     });
   }
 
@@ -63,9 +56,7 @@ export default class LoginController extends Component {
         userInfo.accessToken,
       );
       // login with credential
-      const firebaseUserCredential = await firebase
-        .auth()
-        .signInWithCredential(credential);
+      await firebase.auth().signInWithCredential(credential);
       this.setState({userInfo});
       fetch('https://apt-line-picker.appspot.com/mobile/user-settings', {
         method: 'GET',
@@ -155,7 +146,6 @@ export default class LoginController extends Component {
       await GoogleSignin.signOut();
       this.setState({user: null, loggedIn: false}); // Remember to remove the user from your app's state as well
     } catch (error) {
-      alert('error');
       console.error(error);
     }
   };
@@ -168,7 +158,6 @@ export default class LoginController extends Component {
           <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={styles.scrollView}>
-            <Header />
             {global.HermesInternal == null ? null : (
               <View style={styles.engine}>
                 <Text style={styles.footer}>Engine: Hermes</Text>
@@ -196,12 +185,6 @@ export default class LoginController extends Component {
                   />
                 )}
               </View>
-              {/* <UserSettings
-                email={this.state.email}
-                user_id={this.state.user_id}
-                favorite_food={this.state.favorite_food}
-              /> */}
-              {!this.state.loggedIn && <LearnMoreLinks />}
               {this.state.loggedIn && (
                 <View>
                   <View style={styles.listHeader}>

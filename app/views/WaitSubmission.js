@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -6,10 +6,9 @@ import {
   Text,
   TextInput,
   Button,
-  Image,
   Alert,
-  TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {NavigationEvents} from 'react-navigation';
@@ -17,7 +16,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-picker';
 import PhotoComponent from '../components/PhotoComponent';
 import ButtonComponent from '../components/ButtonComponent';
-import {tsThisType} from '@babel/types';
 
 // Geolocation tutorial:
 // https://github.com/react-native-community/react-native-geolocation
@@ -25,7 +23,6 @@ import {tsThisType} from '@babel/types';
 // https://www.uniquesoftwaredev.com/using-the-camera-in-react-native/
 
 export default class WaitSubmission extends React.Component {
-  // Title of view for navigation
   static navigationOptions = {
     title: 'WaitSubmission',
   };
@@ -50,29 +47,31 @@ export default class WaitSubmission extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
-        <ScrollView
-          style={styles.scrollView}
-          contentInsetAdjustmentBehavior="automatic">
-          <Text>Input Wait Time in Minutes</Text>
-          <TextInput
-            style={styles.textInput}
-            keyboardType="number-pad"
-            onChangeText={waittime => (this.state.wait = waittime)}
-          />
-          <Button
-            title="Submit Wait Time Information"
-            disabled={
-              !this.state.image64 || !this.state.wait || this.state.submitting
-            }
-            onPress={this.submitInfo}
-          />
-          {this.state.submitting ? <ActivityIndicator /> : null}
-        </ScrollView>
-        <PhotoComponent uri={this.state.uploadSource} />
-        <ButtonComponent onPress={this.selectPhotoTapped.bind(this)} />
-      </View>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
+          <ScrollView
+            style={styles.scrollView}
+            contentInsetAdjustmentBehavior="automatic">
+            <Text>Input Wait Time in Minutes</Text>
+            <TextInput
+              style={styles.textInput}
+              keyboardType="number-pad"
+              onChangeText={waittime => (this.state.wait = waittime)}
+            />
+            <Button
+              title="Submit Wait Time Information"
+              disabled={
+                !this.state.image64 || !this.state.wait || this.state.submitting
+              }
+              onPress={this.submitInfo}
+            />
+            {this.state.submitting ? <ActivityIndicator /> : null}
+          </ScrollView>
+          <PhotoComponent uri={this.state.uploadSource} />
+          <ButtonComponent onPress={this.selectPhotoTapped.bind(this)} />
+        </View>
+      </SafeAreaView>
     );
   }
 
