@@ -47,7 +47,7 @@ export default class WaitSubmission extends React.Component {
   }
   render() {
     return (
-      <SafeAreaView>
+
         <View style={styles.container}>
           <NavigationEvents onDidFocus={() => this.PageLoadEvent()} />
           <ScrollView
@@ -71,7 +71,7 @@ export default class WaitSubmission extends React.Component {
           <PhotoComponent uri={this.state.uploadSource} />
           <ButtonComponent onPress={this.selectPhotoTapped.bind(this)} />
         </View>
-      </SafeAreaView>
+
     );
   }
 
@@ -111,7 +111,7 @@ export default class WaitSubmission extends React.Component {
       position => {
         const geolocation =
           position.coords.latitude + ',' + position.coords.longitude;
-        this.setState({geolocation});
+        this.setState({geolocation: geolocation});
       },
       error => Alert.alert(error.message),
       {enableHighAccuracy: true, timeout: 20000}, // maximumAge: 1000, might need for iOS

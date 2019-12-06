@@ -75,6 +75,7 @@ export default class RecentReportsMap extends React.Component {
         },
       });
     });
+    this.getData();
   }
 
   componentWillUnmount() {
@@ -116,6 +117,7 @@ export default class RecentReportsMap extends React.Component {
         this.setState({
           markers: reports,
         });
+        console.log(reports);
       })
       .catch(error => {
         console.log(error);
